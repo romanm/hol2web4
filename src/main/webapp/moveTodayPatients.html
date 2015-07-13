@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="hol2eih3App" ng-controller="SaveCopeTodayPatientsCtrl"
+	ng-cloak class="ng-cloak">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/css/hol2eih3.css"></link>
+<link rel='stylesheet prefetch' href='/css/lib/font-awesome.min.css'>
+<style type="text/css" media="screen">
+body {
+	padding-top: 10px;
+	padding-bottom: 60px;
+}
+</style>
+<title>Запис поступлення/виписки хворих на сьогодні</title>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="/"><span class="glyphicon glyphicon-home"></span></a> Запис
+				поступлення/виписки хворих на сьогодні
+			</div>
+			<div class="collapse navbar-collapse navbar-right">
+				<button type="button" class="btn btn-primary btn-sm"
+					data-ng-click="saveMoveTodayPatients()" data-toggle="modal">
+					<span class="glyphicon glyphicon-floppy-disk"></span> Запис
+				</button>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Запис поступлення/виписки хворих на сьогодні</h2>
+				{{moveTodayPatients.today | date:'dd MMM yyyy' }}
+				<table>
+					<tr>
+						<th>Відділення</th>
+						<th>Поступило</th>
+						<th>Лежить</th>
+						<th>Виписано</th>
+					</tr>
+					<tr
+						ng-repeat="departmentHol in moveTodayPatients.moveTodayPatientsList">
+						<td>{{departmentHol.DEPARTMENT_NAME}}</td>
+						<td><input ng-model="departmentHol.MOVEDEPARTMENTPATIENT_IN"
+							type="text" /></td>
+						<td><input ng-model="departmentHol.MOVEDEPARTMENTPATIENT_IT"
+							type="text" /></td>
+						<td><input ng-model="departmentHol.MOVEDEPARTMENTPATIENT_OUT"
+							type="text" /></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script src="/js/lib/jquery-2.1.4.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+
+<script src="/js/lib/angular_uk.min.js"></script>
+<script src="/js/lib/ui-bootstrap-tpls-0.13.0.min.js"></script>
+<script src='/js/lib/textAngular.min.js'></script>
+<script src='/js/lib/textAngular-sanitize.min.js'></script>
+<script src='/js/lib/textAngular-rangy.min.js'></script>
+<script src='/js/hol2eih3.declare.js'></script>
+<script src='/js/hol2eih3.controller.js'></script>
+
+</html>
