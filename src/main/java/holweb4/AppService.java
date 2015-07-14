@@ -116,13 +116,19 @@ public class AppService {
 	//  1.1  Зчитування надходження/виписки хворих на сьогодні – readTodayMovePatients
 	public List<Map<String, Object>> readMoveTodayPatients(DateTime today) {
 		logger.debug("readMoveTodayPatients");
-		String readMoveTodayPatients_Sql = "SELECT d.department_id, d.department_name, m.movedepartmentpatient_id , m.movedepartmentpatient_in, m.movedepartmentpatient_it,movedepartmentpatient_out "
-				+ " FROM hol1.department d LEFT JOIN "
+		String readMoveTodayPatients_Sql = "SELECT d.department_name, d.department_id "
+				+ ", m.movedepartmentpatient_date, m.movedepartmentpatient_in , m.movedepartmentpatient_out "
+				+ ", m.movedepartmentpatient_it , m.movedepartmentpatient_bed , m.movedepartmentpatient_patient1day "
+				+ ", m.movedepartmentpatient_patient2day , m.movedepartmentpatient_dead , m.movedepartmentpatient_indepartment "
+				+ ", m.movedepartmentpatient_outdepartment, m.movedepartmentpatient_sity , m.movedepartmentpatient_child "
+				+ ", m.movedepartmentpatient_lying, m.movedepartmentpatient_insured, m.movedepartmentpatient_id "
+				+ " FROM hol2.department d LEFT JOIN "
 				+ " (SELECT * FROM hol2.movedepartmentpatient m WHERE m.movedepartmentpatient_date = PARSEDATETIME( ?,'dd-MM-yyyy')) m "
 				+ " ON d.department_id = m.department_id ";
 		logger.debug(readMoveTodayPatients_Sql.replaceFirst("\\?", AppConfig.ddMMyyyDateFormat.format(today.toDate())));
 		List<Map<String, Object>> moveTodayPatients = h2JdbcTemplate.queryForList(readMoveTodayPatients_Sql,AppConfig.ddMMyyyDateFormat.format(today.toDate()));
 		logger.debug(""+moveTodayPatients.size());
+		logger.debug(""+moveTodayPatients.get(0));
 		return moveTodayPatients;
 	}
 	// 2  Показ кількості надходжень/виписки хворих за останні 7 днів – movePatients.html.

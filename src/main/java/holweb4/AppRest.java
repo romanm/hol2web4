@@ -1,8 +1,5 @@
 package holweb4;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
