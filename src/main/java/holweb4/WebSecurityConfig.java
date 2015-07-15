@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		,"/readMovePatients"
                 		,"/readMoveTodayPatients"
                 		,"/saveMoveTodayPatients"
+                		,"/save-*-Patients"
                 		).permitAll()
                 .anyRequest().authenticated()
                 .and()

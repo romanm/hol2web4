@@ -92,6 +92,7 @@ public class AppService {
 			h2JdbcTemplate.update(checkDbVersion);
 		}
 	}
+
 	private Map<String, Object> readJsonDbFile2map(String fileNameJsonDb) {
 		File file = new File(fileNameJsonDb);
 		logger.debug(" o - "+file);
@@ -122,7 +123,7 @@ public class AppService {
 				+ ", m.movedepartmentpatient_patient2day , m.movedepartmentpatient_dead , m.movedepartmentpatient_indepartment "
 				+ ", m.movedepartmentpatient_outdepartment, m.movedepartmentpatient_sity , m.movedepartmentpatient_child "
 				+ ", m.movedepartmentpatient_lying, m.movedepartmentpatient_insured, m.movedepartmentpatient_id "
-				+ " FROM hol2.department d LEFT JOIN "
+				+ " FROM hol1.department d LEFT JOIN "
 				+ " (SELECT * FROM hol2.movedepartmentpatient m WHERE m.movedepartmentpatient_date = PARSEDATETIME( ?,'dd-MM-yyyy')) m "
 				+ " ON d.department_id = m.department_id ";
 		logger.debug(readMoveTodayPatients_Sql.replaceFirst("\\?", AppConfig.ddMMyyyDateFormat.format(today.toDate())));
