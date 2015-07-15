@@ -42,7 +42,9 @@ public class AppService {
 	private void updateDbVersion() {
 		final Map<String, Object> dbVersionUpdate = 
 				readJsonDbFile2map(fileNameDbVersionUpdate);
+		logger.debug(""+dbVersionUpdate);
 		final List<Map> sqlVersionUpdateList = (List) dbVersionUpdate.get("dbVersionUpdateList");
+		logger.debug(""+sqlVersionUpdateList.get(sqlVersionUpdateList.size() - 1));
 		final List<String> sqls0 = (List<String>) ((Map) sqlVersionUpdateList.get(0)).get("sqls");
 		for (String sql : sqls0) 
 			h2JdbcTemplate.update(sql);
@@ -174,7 +176,17 @@ public class AppService {
 					Integer updateMoveDepartmentPatient = updateMoveDepartmentPatient(map);
 					logger.debug(""+(updateMoveDepartmentPatient == 0)+"/"+(updateMoveDepartmentPatient.equals(0)));
 					if(updateMoveDepartmentPatient == 0){
-						insertMoveDepartmentPatient(map,dateTime);
+						Integer insert;
+						try {
+							insertMoveDepartmentPatient(map,dateTime);
+						} catch (Exception e) {
+							deleteMoveDepartmentPatient(AppConfig.ddMMyyyDateFormat.format(dateTime.toDate()), parseInt(map,"DEPARTMENT_ID"));
+							try {
+								insertMoveDepartmentPatient(map,dateTime);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						}
 					}
 				}
 			}
@@ -200,7 +212,7 @@ public class AppService {
 			
 			Integer mOVEDEPARTMENTPATIENT_IN = parseInt(map,"MOVEDEPARTMENTPATIENT_IN");
 			Integer mOVEDEPARTMENTPATIENT_OUT = parseInt(map,"MOVEDEPARTMENTPATIENT_OUT");
-			
+			logger.debug(""+map);
 			final String sql = "UPDATE hol2.movedepartmentpatient "
 					+ " SET "
 					+ " MOVEDEPARTMENTPATIENT_IT  = ?, MOVEDEPARTMENTPATIENT_BED  = ?, MOVEDEPARTMENTPATIENT_PATIENT1DAY = ?  "
@@ -209,7 +221,7 @@ public class AppService {
 					+ ", MOVEDEPARTMENTPATIENT_LYING = ?, MOVEDEPARTMENTPATIENT_INSURED  = ? "
 					+ ", MOVEDEPARTMENTPATIENT_IN  = ?, MOVEDEPARTMENTPATIENT_OUT = ?  "
 					+ " WHERE movedepartmentpatient_id = ?";
-
+			logger.debug(""+sql);
 			int update = h2JdbcTemplate.update( sql, new Object[] {
 					mOVEDEPARTMENTPATIENT_IT, mOVEDEPARTMENTPATIENT_BED, mOVEDEPARTMENTPATIENT_PATIENT1DAY
 					,mOVEDEPARTMENTPATIENT_PATIENT2DAY, mOVEDEPARTMENTPATIENT_DEAD, mOVEDEPARTMENTPATIENT_INDEPARTMENT
@@ -229,14 +241,14 @@ public class AppService {
 			return update;
 		}
 	
-		private void insertMoveDepartmentPatient(Map<String, Object> map, DateTime dateTime) {
+		private Integer insertMoveDepartmentPatient(Map<String, Object> map, DateTime dateTime) throws Exception{
 			Integer mOVEDEPARTMENTPATIENT_ID  = parseInt(map,"MOVEDEPARTMENTPATIENT_ID");
 			if(mOVEDEPARTMENTPATIENT_ID == null)
-				return;
+				return null;
 			Integer dEPARTMENT_ID = (Integer) map.get("DEPARTMENT_ID");
 			//		String mOVEDEPARTMENTPATIENT_DATE = (String) map.get("MOVEDEPARTMENTPATIENT_DATE");
 			String mOVEDEPARTMENTPATIENT_DATE = AppConfig.ddMMyyyDateFormat.format(dateTime.toDate());
-
+			
 			Integer mOVEDEPARTMENTPATIENT_IT = parseInt(map,"MOVEDEPARTMENTPATIENT_IT");
 			Integer mOVEDEPARTMENTPATIENT_BED = parseInt(map,"MOVEDEPARTMENTPATIENT_BED");
 			Integer mOVEDEPARTMENTPATIENT_PATIENT1DAY = parseInt(map,"MOVEDEPARTMENTPATIENT_PATIENT1DAY");
@@ -255,8 +267,6 @@ public class AppService {
 			Integer mOVEDEPARTMENTPATIENT_IN = parseInt(map,"MOVEDEPARTMENTPATIENT_IN");
 			Integer mOVEDEPARTMENTPATIENT_OUT = parseInt(map,"MOVEDEPARTMENTPATIENT_OUT");
 
-
-
 			logger.debug(dEPARTMENT_ID+" " +mOVEDEPARTMENTPATIENT_DATE+" "+mOVEDEPARTMENTPATIENT_IN+" "+mOVEDEPARTMENTPATIENT_IT+" "+mOVEDEPARTMENTPATIENT_OUT);
 			final String sql = "INSERT INTO hol2.movedepartmentpatient ("
 					+ "department_id, movedepartmentpatient_date, MOVEDEPARTMENTPATIENT_BED"
@@ -273,15 +283,23 @@ public class AppService {
 					+ ", ?, ?"
 					+ ", ?, ?, ?"
 					+ ")";
-			h2JdbcTemplate.update( sql, new Object[] {dEPARTMENT_ID, mOVEDEPARTMENTPATIENT_DATE, mOVEDEPARTMENTPATIENT_BED
+			int insert = h2JdbcTemplate.update( sql, new Object[] {dEPARTMENT_ID, mOVEDEPARTMENTPATIENT_DATE, mOVEDEPARTMENTPATIENT_BED
 					, mOVEDEPARTMENTPATIENT_IT, mOVEDEPARTMENTPATIENT_PATIENT1DAY 
 					, mOVEDEPARTMENTPATIENT_PATIENT2DAY, mOVEDEPARTMENTPATIENT_DEAD, mOVEDEPARTMENTPATIENT_INDEPARTMENT 
 					, mOVEDEPARTMENTPATIENT_OUTDEPARTMENT, mOVEDEPARTMENTPATIENT_SITY, mOVEDEPARTMENTPATIENT_CHILD 
 					, mOVEDEPARTMENTPATIENT_LYING, mOVEDEPARTMENTPATIENT_INSURED
 					, mOVEDEPARTMENTPATIENT_IN, mOVEDEPARTMENTPATIENT_OUT, mOVEDEPARTMENTPATIENT_ID
 			});
+			return insert;
 		}
-	
+
+		private void deleteMoveDepartmentPatient(String date, int departmentId) {
+			String sql = "delete from hol2.MOVEDEPARTMENTPATIENT where movedepartmentpatient_date = PARSEDATETIME(?,'dd-MM-yyyy') and department_id = ?";
+			h2JdbcTemplate.update( sql, new Object[] {
+					date, departmentId
+			});
+		}
+
 	private Integer parseInt(Map<String, Object> map, String key) {
 		Integer value = null;
 		Object valueOnject = map.get(key);

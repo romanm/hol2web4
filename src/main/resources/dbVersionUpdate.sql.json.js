@@ -48,6 +48,9 @@
 "DROP TABLE IF EXISTS hol2.movedepartmentpatient"
 ,"CREATE TABLE hol2.movedepartmentpatient ( movedepartmentpatient_id INT PRIMARY KEY, movedepartmentpatient_date DATE NOT NULL, department_id SMALLINT NOT NULL, movedepartmentpatient_in TINYINT, movedepartmentpatient_out TINYINT, movedepartmentpatient_it TINYINT, movedepartmentpatient_bed TINYINT, movedepartmentpatient_patient1day TINYINT, movedepartmentpatient_patient2day TINYINT, movedepartmentpatient_dead TINYINT, movedepartmentpatient_indepartment TINYINT, movedepartmentpatient_outdepartment TINYINT, movedepartmentpatient_sity TINYINT, movedepartmentpatient_child TINYINT, movedepartmentpatient_lying TINYINT, movedepartmentpatient_insured TINYINT)"
 ,"ALTER TABLE hol2.movedepartmentpatient ADD CONSTRAINT department_id FOREIGN KEY (department_id) REFERENCES hol1.department(department_id)"
+]},{
+	"dbVersionId" : 7, "sqls" : [
+"ALTER TABLE hol2.movedepartmentpatient ADD CONSTRAINT deda UNIQUE (department_id, movedepartmentpatient_date)"
 ]}
 	
 ]}
