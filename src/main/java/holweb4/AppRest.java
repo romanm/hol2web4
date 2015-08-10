@@ -79,4 +79,16 @@ public class AppRest {
 			Map<String, Object> readMovePatients = appService.readMovePatients();
 			return readMovePatients;
 		}
+		//excell
+		@Autowired private ExcelService excelService;
+		@RequestMapping(value = "/create-read-{yyyy}-{mm}-{dd}-excel", method = RequestMethod.GET)
+		public String createReadExcell(
+				@PathVariable Integer yyyy , @PathVariable Integer mm, @PathVariable Integer dd,
+				Principal userPrincipal) {
+			logger.debug("/create-read-{yyyy}-{mm}-{dd}-excel");
+			DateTime dateTime = new DateTime(yyyy,mm,dd,0,0);
+			List<Map<String, Object>> moveTodayPatientsList = appService.readMoveTodayPatients(dateTime);
+			excelService.createExcel(moveTodayPatientsList, dateTime);
+			return "redirect: excel/pyx2015.xls"; 
+		}
 }
