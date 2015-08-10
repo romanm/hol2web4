@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="hol2eih3App" ng-controller="MvPatientInWeekDayCtrl" ng-cloak
+	class="ng-cloak">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/css/hol2eih3.css"></link>
+<link rel='stylesheet prefetch' href='/css/lib/font-awesome.min.css'>
+<style type="text/css" media="screen">
+body {
+	padding-top: 30px;
+	padding-bottom: 60px;
+}
+</style>
+<title>Рух хворих за останні 7 днів</title>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+			<a href="/"><span class="glyphicon glyphicon-home"></span></a>
+			Рух хворих за останні 7 днів</div>
+			<div class="collapse navbar-collapse navbar-right">.</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<table border="1">
+					<tr>
+						<td>Останні сім днів</td>
+						<td ng-repeat="d in last7day"><a
+							href="mvPatientInWeekDay.html?date={{d | date:'yyyy-MM-dd' }}">
+								<b ng-show="isMyDate(d)"> {{d | date:' dd MMM' }} </b> <span
+								ng-show="!isMyDate(d)"> {{d | date:' dd MMM' }} </span>
+						</a></td>
+						<td></td>
+						<td>&nbsp; &nbsp; {{paramDate}}</td>
+						<td><a href="/create-read-{{paramDate}}-excel"> <i
+								class="fa fa-file-excel-o fa-2x"></i>
+						</a></td>
+					</tr>
+				</table>
+				<table border="1">
+					<tr class="pm_head">
+						<th rowspan="2" class="center">Відділення</th>
+						<th rowspan="2"><img alt="Розгонтуто ліжок" src="/img/bad_is.png"> </th>
+						<th rowspan="2"> <img alt="Стан на вчора" src="/img/patient_day1.png"> </th>
+						<th rowspan="2"> <img alt="Поступило" src="/img/patient_new.png"> </th>
+						<th colspan="2">переведено</th>
+						<th rowspan="2"> <img alt="Виписано" src="/img/discharged.png"> </th>
+						<th rowspan="2"> <img alt="Померло" src="/img/dead.png"> </th>
+						<th rowspan="2"> <img alt="Стан на сьогодні" src="/img/today.png"> </th>
+						<th colspan="5" class="center">з них</th>
+					</tr>
+					<tr class="pm_head">
+						<th > <img alt="з інших відділень" src="/img/from_department.png"> </th>
+						<th > <img alt="в інші відділення" src="/img/to_department.png"> </th>
+						<th > <img alt="м. Хмельницький" src="/img/city.png"> </th>
+						<th > <img alt="діти" src="/img/child.png"> </th>
+						<th > <img alt="Лежачі" src="/img/bad_patient.png"> </th>
+						<th > <img alt="Застраховані" src="/img/insurance.png"> </th>
+						<th > ЧАЕС </th>
+					</tr>
+					<tr
+						ng-repeat="departmentHol in moveTodayPatients.moveTodayPatientsList">
+						<td>{{departmentHol.DEPARTMENT_NAME}}</td>
+						<td>{{departmentHol.DEPARTMENT_BED}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_PATIENT1DAY}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_IN}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_INDEPARTMENT}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_OUTDEPARTMENT}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_OUT}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_DEAD}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_PATIENT2DAY}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_SITY}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_CHILD}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_LYING}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_INSURED}}</td>
+						<td class="center">{{departmentHol.MOVEDEPARTMENTPATIENT_CAES}}</td>
+					</tr>
+					<tr>
+						<th>ВСЬОГО</th>
+						<th class="center">{{summMinusDR('DEPARTMENT_BED')}}
+						</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_PATIENT1DAY')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_IN')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_INDEPARTMENT')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_OUTDEPARTMENT')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_OUT')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_DEAD')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_PATIENT2DAY')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_SITY')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_CHILD')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_LYING')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_INSURED')}}</th>
+						<th class="center">{{summ('MOVEDEPARTMENTPATIENT_CAES')}}</th>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+</body>
+<script src="/js/lib/jquery-2.1.4.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/lib/angular_uk.min.js"></script>
+<script src="/js/lib/ui-bootstrap-tpls-0.13.0.min.js"></script>
+<script src='/js/lib/textAngular.min.js'></script>
+<script src='/js/lib/textAngular-sanitize.min.js'></script>
+<script src='/js/lib/textAngular-rangy.min.js'></script>
+<script src='/js/lib/moment-with-locales.min.js'></script>
+
+<script src='/js/hol2eih3.declare.js'></script>
+<script src='/js/hol2eih3.controller.js'></script>
+
+</html>
