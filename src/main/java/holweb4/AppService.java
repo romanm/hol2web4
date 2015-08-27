@@ -42,9 +42,7 @@ public class AppService {
 	private void updateDbVersion() {
 		final Map<String, Object> dbVersionUpdate = 
 				readJsonDbFile2map(fileNameDbVersionUpdate);
-		logger.debug(""+dbVersionUpdate);
 		final List<Map> sqlVersionUpdateList = (List) dbVersionUpdate.get("dbVersionUpdateList");
-		logger.debug(""+sqlVersionUpdateList.get(sqlVersionUpdateList.size() - 1));
 		final List<String> sqls0 = (List<String>) ((Map) sqlVersionUpdateList.get(0)).get("sqls");
 		for (String sql : sqls0) 
 			h2JdbcTemplate.update(sql);
@@ -218,12 +216,15 @@ public class AppService {
 			List<Map<String, Object>> moveTodayPatientsList = (List) moveTodayPatients.get("moveTodayPatientsList");
 			for (Map<String, Object> map : moveTodayPatientsList) {
 				Integer mOVEDEPARTMENTPATIENT_ID = (Integer) map.get("MOVEDEPARTMENTPATIENT_ID");
+				if(updateMoveDepartmentPatient(map,dateTime) == 0){
+					insertMoveDepartmentPatient(map,dateTime);
+				}
+					/*
 				if(mOVEDEPARTMENTPATIENT_ID == null){
 					insertMoveDepartmentPatient(map,dateTime);
 				}else
-					if(updateMoveDepartmentPatient(map) == 0){
-						insertMoveDepartmentPatient(map,dateTime);
 				}
+					 * */
 			}
 		}
 		private void insertMoveDepartmentPatient(Map<String, Object> map, DateTime dateTime) {
@@ -257,7 +258,7 @@ public class AppService {
 					+ ", MOVEDEPARTMENTPATIENT_PATIENT2DAY, MOVEDEPARTMENTPATIENT_DEAD, MOVEDEPARTMENTPATIENT_INDEPARTMENT "
 					+ ", MOVEDEPARTMENTPATIENT_OUTDEPARTMENT, MOVEDEPARTMENTPATIENT_SITY, MOVEDEPARTMENTPATIENT_CHILD "
 					+ ", MOVEDEPARTMENTPATIENT_LYING, MOVEDEPARTMENTPATIENT_INSURED"
-					+ ", MOVEDEPARTMENTPATIENT_IN, MOVEDEPARTMENTPATIENT_OUT, MOVEDEPARTMENTPATIENT_CAES, MOVEDEPARTMENTPATIENT_ID"
+		+ ", MOVEDEPARTMENTPATIENT_IN, MOVEDEPARTMENTPATIENT_OUT, MOVEDEPARTMENTPATIENT_CAES, MOVEDEPARTMENTPATIENT_ID"
 					+ ") VALUES ("
 					+ " ?, PARSEDATETIME(?,'dd-MM-yyyy'), ?"
 					+ ", ?, ?"
@@ -300,7 +301,7 @@ public class AppService {
 						, mOVEDEPARTMENTPATIENT_PATIENT2DAY, mOVEDEPARTMENTPATIENT_DEAD, mOVEDEPARTMENTPATIENT_INDEPARTMENT 
 						, mOVEDEPARTMENTPATIENT_OUTDEPARTMENT, mOVEDEPARTMENTPATIENT_SITY, mOVEDEPARTMENTPATIENT_CHILD 
 						, mOVEDEPARTMENTPATIENT_LYING, mOVEDEPARTMENTPATIENT_INSURED
-						, mOVEDEPARTMENTPATIENT_IN, mOVEDEPARTMENTPATIENT_OUT, mOVEDEPARTMENTPATIENT_CAES, mOVEDEPARTMENTPATIENT_ID
+		, mOVEDEPARTMENTPATIENT_IN, mOVEDEPARTMENTPATIENT_OUT, mOVEDEPARTMENTPATIENT_CAES, mOVEDEPARTMENTPATIENT_ID
 				});
 			}
 		}
@@ -313,7 +314,7 @@ public class AppService {
 			for (Map<String, Object> map : moveTodayPatientsList) {
 				Integer mOVEDEPARTMENTPATIENT_ID = (Integer) map.get("MOVEDEPARTMENTPATIENT_ID");
 				if(mOVEDEPARTMENTPATIENT_ID != null) {
-					Integer updateMoveDepartmentPatient = updateMoveDepartmentPatient(map);
+					Integer updateMoveDepartmentPatient = updateMoveDepartmentPatient(map,dateTime);
 					logger.debug(""+(updateMoveDepartmentPatient == 0)+"/"+(updateMoveDepartmentPatient.equals(0)));
 					if(updateMoveDepartmentPatient == 0){
 						Integer insert;
@@ -332,7 +333,7 @@ public class AppService {
 			}
 		}
 
-		private int updateMoveDepartmentPatient(Map<String, Object> map) {
+		private int updateMoveDepartmentPatient(Map<String, Object> map, DateTime dateTime) {
 			logger.debug("updateMoveDepartmentPatient");
 			Integer mOVEDEPARTMENTPATIENT_IT = parseInt(map,"MOVEDEPARTMENTPATIENT_IT");
 			Integer mOVEDEPARTMENTPATIENT_BED = parseInt(map,"MOVEDEPARTMENTPATIENT_BED");
@@ -353,7 +354,10 @@ public class AppService {
 			Integer mOVEDEPARTMENTPATIENT_OUT = parseInt(map,"MOVEDEPARTMENTPATIENT_OUT");
 			Integer mOVEDEPARTMENTPATIENT_CAES = parseInt(map,"MOVEDEPARTMENTPATIENT_CAES");
 			
-			Integer mOVEDEPARTMENTPATIENT_ID = (Integer) map.get("MOVEDEPARTMENTPATIENT_ID");
+			Integer dEPARTMENT_ID = (Integer) map.get("DEPARTMENT_ID");
+			String mOVEDEPARTMENTPATIENT_DATE = AppConfig.ddMMyyyDateFormat.format(dateTime.toDate());
+
+
 			final String sql = "UPDATE hol2.movedepartmentpatient "
 					+ " SET "
 					+ " MOVEDEPARTMENTPATIENT_IT  = ?, MOVEDEPARTMENTPATIENT_BED  = ?, MOVEDEPARTMENTPATIENT_PATIENT1DAY = ?  "
@@ -361,22 +365,26 @@ public class AppService {
 					+ ", MOVEDEPARTMENTPATIENT_OUTDEPARTMENT = ?, MOVEDEPARTMENTPATIENT_SITY  = ?, MOVEDEPARTMENTPATIENT_CHILD = ?  "
 					+ ", MOVEDEPARTMENTPATIENT_LYING = ?, MOVEDEPARTMENTPATIENT_INSURED  = ? "
 					+ ", MOVEDEPARTMENTPATIENT_IN  = ?, MOVEDEPARTMENTPATIENT_OUT = ? , MOVEDEPARTMENTPATIENT_CAES = ?  "
-					+ " WHERE movedepartmentpatient_id = ?";
+					+ " WHERE department_id = ? AND MOVEDEPARTMENTPATIENT_DATE = PARSEDATETIME(?,'dd-MM-yyyy')";
 	logger.debug(sql);
+	logger.debug(dEPARTMENT_ID+"/"+mOVEDEPARTMENTPATIENT_DATE+"/"+mOVEDEPARTMENTPATIENT_IN+"/"+mOVEDEPARTMENTPATIENT_OUT
+			+"/"+mOVEDEPARTMENTPATIENT_PATIENT1DAY
+			+"/"+mOVEDEPARTMENTPATIENT_PATIENT2DAY
+			);
 			int update = h2JdbcTemplate.update( sql, new Object[] {
 					mOVEDEPARTMENTPATIENT_IT, mOVEDEPARTMENTPATIENT_BED, mOVEDEPARTMENTPATIENT_PATIENT1DAY
 					,mOVEDEPARTMENTPATIENT_PATIENT2DAY, mOVEDEPARTMENTPATIENT_DEAD, mOVEDEPARTMENTPATIENT_INDEPARTMENT
 					,mOVEDEPARTMENTPATIENT_OUTDEPARTMENT, mOVEDEPARTMENTPATIENT_SITY, mOVEDEPARTMENTPATIENT_CHILD
 					,mOVEDEPARTMENTPATIENT_LYING, mOVEDEPARTMENTPATIENT_INSURED
 					,mOVEDEPARTMENTPATIENT_IN, mOVEDEPARTMENTPATIENT_OUT, mOVEDEPARTMENTPATIENT_CAES
-					, mOVEDEPARTMENTPATIENT_ID}
+					, dEPARTMENT_ID, mOVEDEPARTMENTPATIENT_DATE}
 			, new int[] {
 					Types.INTEGER, Types.INTEGER, Types.INTEGER
 					,Types.INTEGER, Types.INTEGER, Types.INTEGER
 					,Types.INTEGER, Types.INTEGER, Types.INTEGER
 					,Types.INTEGER, Types.INTEGER
 					,Types.INTEGER, Types.INTEGER, Types.INTEGER
-					, Types.INTEGER
+					, Types.INTEGER, Types.VARCHAR
 					} );
 			return update;
 		}

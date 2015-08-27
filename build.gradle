@@ -2,6 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
     }
+    
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
     }
@@ -24,8 +25,19 @@ repositories {
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+   configurations.all {
+    resolutionStrategy {
+        eachDependency {
+            if (it.requested.group == 'org.apache.tomcat.embed') {
+                it.useVersion '8.0.26'
+            }
+        }
+    }
+}
+
 dependencies {
-	compile "org.apache.tomcat:tomcat-dbcp:8.0.23"
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile "org.apache.tomcat:tomcat-dbcp:8.0.26"
 	compile "org.springframework:spring-jdbc"
 	compile "com.h2database:h2"
 	compile "joda-time:joda-time:2.8.1"
