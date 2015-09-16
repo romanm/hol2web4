@@ -72,7 +72,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Редактор питання і відповідей</h4>
+							<h4 class="modal-title">Редактор питання (Nr {{$index + 1}}) і відповідей</h4>
 						</div>
 						<div class="modal-body">
 	
@@ -132,7 +132,7 @@
 			$http.post("/saveQa", $scope.qaJson).
 			then(function(response) {
 				console.log("---------success--------")
-				$scope.qaEditIndex = -1;
+				//$scope.qaEditIndex = -1;
 			}, function(response) {
 				console.log("----------erros-------");
 				console.log(response);
