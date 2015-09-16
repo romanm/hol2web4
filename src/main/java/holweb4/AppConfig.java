@@ -5,15 +5,20 @@ import java.text.SimpleDateFormat;
 public class AppConfig {
 	public final static SimpleDateFormat yyyyMMddDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	public final static SimpleDateFormat ddMMyyyDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	public final static SimpleDateFormat yyyyMMddHHmmssDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	final static String commonContentFileName = "commonContent.json";
+	final static String qaJsonFileName = "qa.json";
 	final static String jsonDbFiles	= "src/main/webapp/db/";
 	//product
 //	final static String applicationFolderPfad	= "/home/holweb/server4/hol2web4/";
 //	final static String urlDb = "jdbc:h2:/home/holweb/server4/h2hol2web4/holweb4";
 //	final static String applicationExcelFolderPfad	= "/home/holweb/server4/h2hol2web4/";
+//	final static String applicationDbFolderPfad	= "/home/holweb/server4/db-hol2web4/";
 	//development
 	final static String applicationFolderPfad = "/home/roman/algoritmed.com/development/hol2web4/";
 	final static String urlDb = "jdbc:h2:tcp://localhost/holweb4/holweb4";
 	final static String applicationExcelFolderPfad	= applicationFolderPfad+"src/main/webapp/excel/";
+	final static String applicationDbFolderPfad	= "/home/roman/algoritmed.com/development/db-hol2web4/";
 
 //	final static String urlDb = "jdbc:h2:/home/roman/algoritmed.com/h2-files/holweb4/holweb4";
 

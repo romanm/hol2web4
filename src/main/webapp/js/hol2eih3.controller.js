@@ -38,7 +38,8 @@ var initController = function($scope, $http, $filter){
 	
 }
 //  1  Запис надходжень/виписки хворих за сьогодні – saveMovePatients.html.
-hol2eih3App.controller('SaveCopeTodayPatientsCtrl', [ '$scope', '$http', '$filter', '$sce', function ($scope, $http, $filter, $sce) {
+hol2eih3App.controller('SaveCopeTodayPatientsCtrl'
+	, [ '$scope', '$http', '$filter', '$sce', function ($scope, $http, $filter, $sce) {
 	initController($scope, $http, $filter);
 	//  1.1  Зчитування надходження/виписки хворих на сьогодні – readTodayMovePatients
 	$scope.readMoveTodayPatients();
