@@ -23,7 +23,28 @@ var initController = function($scope, $http, $filter){
 		return parameters.date == $scope.formatDateyyyyMMdd(d);
 	}
 
-	
+	$scope.summ = function(fieldName){
+		var summ = 0;
+		if($scope.moveTodayPatients)
+			angular.forEach($scope.moveTodayPatients.moveTodayPatientsList, function(department, key) {
+				summ += department[fieldName];
+			});
+		return summ;
+	}
+
+	$scope.summMinusDR = function(fieldName){
+		var summ = 0;
+		if($scope.moveTodayPatients)
+			angular.forEach($scope.moveTodayPatients.moveTodayPatientsList, function(department, key) {
+				if(department.DEPARTMENT_ID != 5
+				&& department.DEPARTMENT_ID != 22
+				){
+					summ += department[fieldName];
+				}
+			});
+		return summ;
+	}
+
 	$scope.today = new Date();
 	console.log( $filter('date')( $scope.today, "yyyy-MM-dd"));
 	$scope.last7day = [$scope.today];
