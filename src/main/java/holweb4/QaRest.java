@@ -1,6 +1,5 @@
 package holweb4;
 
-import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class QaRest {
 	@Autowired private JsonToFileService jsonToFileService;
 	
-	@RequestMapping(value = "/read_user", method = RequestMethod.GET)
-	public  @ResponseBody Principal getRoleTypes(Principal userPrincipal) {
-		return userPrincipal;
-	}
 	@RequestMapping(value = "/saveQa", method = RequestMethod.POST)
 	public  @ResponseBody Map<String, Object> saveQa(@RequestBody Map<String, Object> qaJsonJavaObject) {
 		System.out.println(26);

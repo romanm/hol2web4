@@ -1,5 +1,6 @@
 package holweb4;
 
+import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,4 +31,9 @@ public class CmsCommonRest {
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public String view() { return "redirect:/view/v.html?page1"; }
 
+	@RequestMapping(value = "/read_user", method = RequestMethod.GET)
+	public  @ResponseBody Principal getRoleTypes(Principal userPrincipal) {
+		return userPrincipal;
+	}
+	
 }

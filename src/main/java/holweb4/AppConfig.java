@@ -25,4 +25,5 @@ public class AppConfig {
 	//all
 	final static String applicationResourcesFolderPfad	= applicationFolderPfad+"src/main/resources/";
 	final static String innerExcelFolderPfad	= applicationFolderPfad + "src/main/webapp/excel/";
+	final static String sahYearZwitJsonFileName = "sah_year_zwit.json";
 }
