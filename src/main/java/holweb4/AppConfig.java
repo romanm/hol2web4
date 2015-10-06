@@ -13,7 +13,7 @@ public class AppConfig {
 //	final static String applicationFolderPfad	= "/home/holweb/server4/hol2web4/";
 //	final static String urlDb = "jdbc:h2:/home/holweb/server4/h2hol2web4/holweb4";
 //	final static String applicationExcelFolderPfad	= "/home/holweb/server4/h2hol2web4/";
-//	final static String applicationDbFolderPfad	= "/home/holweb/server4/db-hol2web4/";
+//	final static String applicationDbFolderPfad	= "/home/holweb/server4/db/";
 	//development
 	final static String applicationFolderPfad = "/home/roman/algoritmed.com/development/hol2web4/";
 	final static String urlDb = "jdbc:h2:tcp://localhost/holweb4/holweb4";

@@ -21,10 +21,14 @@
 				src="http://hol.in.ua/img/hol-kh-3.png">
 			</a> Редагування сторінки: питання / відповіді
 		</h1>
-		<div>
-			<a href="/view/randomQa.html">Вибрати для екзамену
-				{{qaJson.qForTest}} питань. випадково. </a>
-		</div>
+		<table style="width: 100%">
+			<tr>
+				<td><a href="/view/randomQa.html">Вибрати для екзамену
+						{{qaJson.qForTest}} питань. випадково. </a></td>
+				<td class="text-right"><a href="/edit/flist.html?">Резервні
+						копії</a></td>
+			</tr>
+		</table>
 		<hr/>
 		<div>
 			<b> <a ng-click="setQaEditIndex(-3)"> Шапка</a>:

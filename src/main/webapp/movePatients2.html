@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="hol2eih3App" ng-controller="MovePatientsCtrl" ng-cloak
+	class="ng-cloak">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/css/hol2eih3.css"></link>
+<link rel='stylesheet prefetch' href='/css/lib/font-awesome.min.css'>
+<style type="text/css" media="screen">
+body {
+	padding-top: 10px;
+	padding-bottom: 60px;
+}
+</style>
+<title>Рух хворих за останні 7 днів</title>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+			<a href="/"><span class="glyphicon glyphicon-home"></span></a>
+			Рух хворих за останні 7 днів</div>
+			<div class="collapse navbar-collapse navbar-right">.</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>Рух хворих за останні 7 днів</h2>
+				{{today | date:'dd MMM yyyy' }}
+				<table>
+					<tr>
+						<th>Відділення</th>
+						<th ng-repeat="d in last7day"><span
+							ng-show="last7day.length - $index > 2"> {{d | date:' | dd MMM' }} </span> 
+							<a ng-show="last7day.length - $index == 2"
+							href="moveTodayPatients.html?date={{d | date:'yyyy-MM-dd' }}">
+								{{d | date:' | dd MMM' }} </a> <a ng-show="$last"
+							href="moveTodayPatients.html"> {{d | date:' | dd MMM' }} </a></th>
+					</tr>
+					<tr ng-repeat="departmentHol in movePatients.departments">
+						<td>{{departmentHol.DEPARTMENT_NAME}}</td>
+						<td ng-repeat="d in last7day"
+						ng-init="dpm = movePatients[yyyyMMdd(d)][departmentHol.DEPARTMENT_ID]"
+						>
+						<span
+							ng-show="dpm">
+								{{dpm.MOVEDEPARTMENTPATIENT_IN}} /
+								{{dpm.MOVEDEPARTMENTPATIENT_IT}} /
+								{{dpm.MOVEDEPARTMENTPATIENT_OUT}} 
+								
+								</span></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="/js/lib/jquery-2.1.4.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/lib/angular_uk.min.js"></script>
+<script src="/js/lib/ui-bootstrap-tpls-0.13.0.min.js"></script>
+<script src='/js/lib/textAngular.min.js'></script>
+<script src='/js/lib/textAngular-sanitize.min.js'></script>
+<script src='/js/lib/textAngular-rangy.min.js'></script>
+<script src='/js/lib/moment-with-locales.min.js'></script>
+
+<script src='/js/hol2eih3.declare.js'></script>
+<script src='/js/hol2eih3.controller.js'></script>
+
+</html>
