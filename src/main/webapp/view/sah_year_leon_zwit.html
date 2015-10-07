@@ -22,7 +22,7 @@ input[type="number"] {
 			<tr>
 				<td>
 					<h2>
-						<a href="/bugtwed/sah_inhal_report.html"> Заповніть данні
+						<a href="/edit/sah_inhal_report.html"> Заповніть данні
 							свого району -- </a> {{data.regions[user.name].name}}
 					</h2>
 				</td>
@@ -37,15 +37,15 @@ input[type="number"] {
 		<hr/>
 		<div>
 			<b> Міста: </b> <span
-				ng-repeat="(regionKey, regionValue) in data.regions"
+				ng-repeat="regionKey in data.regions.order"
 				ng-if="regionKey.substring(2,3) != 'r'"> {{$index + 1}} -
-				{{regionValue.name}}{{$last ? ".":","}} </span>
+				{{data.regions[regionKey].name}}{{$last ? ".":","}} </span>
 		</div>
 		<div>
 			<b> Райони: </b> <span
-				ng-repeat="(regionKey, regionValue) in data.regions"
+				ng-repeat="regionKey in data.regions.order"
 				ng-if="regionKey.substring(2,3) == 'r'"> {{$index + 1}} -
-				{{regionValue.name}}{{$last ? ".":","}} </span>
+				{{data.regions[regionKey].name}}{{$last ? ".":","}} </span>
 		</div>
 		
 		<!-- 
@@ -60,20 +60,18 @@ input[type="number"] {
 				</tr>
 				<tr>
 					<th></th>
-					<th ng-repeat="(regionKey, regionValue) in data.regions">
-						{{$index + 1}}</th>
+					<th ng-repeat="(regionKey, regionValue) in data.regions">{{$index + 1}}</th>
 				</tr>
 			</thead>
 			<tbody ng-repeat="(paramKey, paramValue) in data.parameters">
 				<tr ng-if="paramValue.preParam">
 					<th colspan="{{objectKeys(data.regions).length + 1}}">
-						<h4>
-							{{data.preParam[data.parameters[paramKey].preParam].title}}</h4>
+						<h4>{{data.preParam[data.parameters[paramKey].preParam].title}}</h4>
 					</th>
 				</tr>
 				<tr>
 					<td>{{data.parameters[paramKey].title}}</td>
-					<td ng-repeat="(regionKey, regionValue) in data.regions">
+					<td ng-repeat="regionKey in data.regions.order">
 						{{data.zwit[regionKey][paramKey]}}</td>
 				</tr>
 			</tbody>
