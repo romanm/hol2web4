@@ -1,11 +1,9 @@
-package holweb4;
+package holweb4.excel;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -27,8 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import holweb4.AppConfig;
+
 @Component("excelService")
-public class ExcelService {
+public class ExcelService extends ExcelBasic{
 	private static final Logger logger = LoggerFactory.getLogger(ExcelService.class);
 
 	HSSFCellStyle dateCellStyle = null;
@@ -38,7 +38,7 @@ public class ExcelService {
 	
 	public void createExcel(List<Map<String, Object>> moveTodayPatientsList, DateTime dateTime) {
 //		testExcel(moveTodayPatientsList);
-		HSSFWorkbook pyx2015 = readExcel();
+		HSSFWorkbook pyx2015 = readExcel("pyx2015.xls");
 		createHelper = pyx2015.getCreationHelper();
 		dateCellStyle = pyx2015.createCellStyle();
 		dateCellStyle.setDataFormat(
@@ -292,14 +292,5 @@ public class ExcelService {
 		}
 		return null;
 	}
-	private HSSFWorkbook readExcel() {
-		try {
-			InputStream inputStream = new FileInputStream(
-					AppConfig.applicationExcelFolderPfad+"pyx2015.xls");
-			return new HSSFWorkbook(inputStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 }

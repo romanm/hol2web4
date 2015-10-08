@@ -11,6 +11,9 @@
 input[type="number"] {
 	width: 60px;
 }
+.lightingRegionKey{
+background-color: yellow;
+}
 </style>
 </head>
 <body>
@@ -35,19 +38,20 @@ input[type="number"] {
 			</tr>
 		</table>
 		<hr/>
-		<div>
-			<b> Міста: </b> <span
-				ng-repeat="regionKey in data.regions.order"
-				ng-if="regionKey.substring(2,3) != 'r'"> {{$index + 1}} -
-				{{data.regions[regionKey].name}}{{$last ? ".":","}} </span>
+		<div><b> Міста: </b> <span ng-repeat="regionKey in data.regions.order"
+				ng-class="{lightingRegionKey:lightingRegionKey==regionKey}"
+				ng-if="regionKey.substring(2,3) != 'r'"> {{$index + 1}} - <a
+				ng-click="lighting(regionKey)">
+					{{data.regions[regionKey].name}}{{$last ? ".":","}} </a></span>
 		</div>
-		<div>
-			<b> Райони: </b> <span
-				ng-repeat="regionKey in data.regions.order"
-				ng-if="regionKey.substring(2,3) == 'r'"> {{$index + 1}} -
-				{{data.regions[regionKey].name}}{{$last ? ".":","}} </span>
+		<div><b> Райони: </b> <span ng-repeat="regionKey in data.regions.order"
+				ng-class="{lightingRegionKey:lightingRegionKey==regionKey}"
+				ng-if="regionKey.substring(2,3) == 'r'"> {{$index + 1}} - <a
+				ng-click="lighting(regionKey)">
+					{{data.regions[regionKey].name}}{{$last ? ".":","}} </a>
+			</span>
 		</div>
-		
+
 		<!-- 
 		<table border="1">
 		 -->
@@ -60,7 +64,11 @@ input[type="number"] {
 				</tr>
 				<tr>
 					<th></th>
-					<th ng-repeat="(regionKey, regionValue) in data.regions">{{$index + 1}}</th>
+					<th ng-repeat="regionKey in data.regions.order"
+						ng-class="{lightingRegionKey:lightingRegionKey==regionKey}">
+						<a ng-click="lighting(regionKey)"> {{$index + 1}} </a>
+					</th>
+					<th>∑</th>
 				</tr>
 			</thead>
 			<tbody ng-repeat="(paramKey, paramValue) in data.parameters">
@@ -73,6 +81,7 @@ input[type="number"] {
 					<td>{{data.parameters[paramKey].title}}</td>
 					<td ng-repeat="regionKey in data.regions.order">
 						{{data.zwit[regionKey][paramKey]}}</td>
+					<td>{{sum(paramKey)}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -95,8 +104,20 @@ input[type="number"] {
 				$scope.role = $scope.user.authorities[0].authority.split("_")[1];
 			});
 
-			
-
+			$scope.sum = function(paramKey){
+				var sum = 0;
+//				if("i04sevoranSubventionPrevious2Year" == paramKey)
+				for(var zwitKey in $scope.data.zwit){
+					if($scope.data.zwit[zwitKey][paramKey])
+					sum += $scope.data.zwit[zwitKey][paramKey];
+				}
+				if(sum > 0)
+					return sum;
+			}
+			$scope.lighting = function(regionKey){
+				console.log(regionKey);
+				$scope.lightingRegionKey = regionKey;
+			}
 			$scope.objectKeys = function(object){
 				if(object)
 					return Object.keys(object);

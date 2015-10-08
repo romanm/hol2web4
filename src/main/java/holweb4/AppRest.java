@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import holweb4.excel.ExcelService;
+
 @Controller
 public class AppRest {
 	private static final Logger logger = LoggerFactory.getLogger(AppRest.class);
