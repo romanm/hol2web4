@@ -65,14 +65,16 @@ background-color: yellow;
 				<tr>
 					<th></th>
 					<th ng-repeat="regionKey in data.regions.order"
+						ng-click="lighting(regionKey)"
 						ng-class="{lightingRegionKey:lightingRegionKey==regionKey}">
-						<a ng-click="lighting(regionKey)"> {{$index + 1}} </a>
+						<a 
+						> {{$index + 1}} </a>
 					</th>
 					<th>∑</th>
 				</tr>
 			</thead>
-			<tbody ng-repeat="(paramKey, paramValue) in data.parameters">
-				<tr ng-if="paramValue.preParam">
+			<tbody ng-repeat="paramKey in data.parameters.order">
+				<tr ng-if="data.parameters[paramKey].preParam">
 					<th colspan="{{objectKeys(data.regions).length + 1}}">
 						<h4>{{data.preParam[data.parameters[paramKey].preParam].title}}</h4>
 					</th>
@@ -81,7 +83,7 @@ background-color: yellow;
 					<td>{{data.parameters[paramKey].title}}</td>
 					<td ng-repeat="regionKey in data.regions.order">
 						{{data.zwit[regionKey][paramKey]}}</td>
-					<td>{{sum(paramKey)}}</td>
+					<th>{{sum(paramKey)}}</th>
 				</tr>
 			</tbody>
 		</table>
