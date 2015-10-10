@@ -38,7 +38,8 @@ public class ExcelService extends ExcelBasic{
 	
 	public void createExcel(List<Map<String, Object>> moveTodayPatientsList, DateTime dateTime) {
 //		testExcel(moveTodayPatientsList);
-		HSSFWorkbook pyx2015 = readExcel("pyx2015.xls");
+		String shortFileName = "pyx2015.xls";
+		HSSFWorkbook pyx2015 = readExcel(shortFileName);
 		createHelper = pyx2015.getCreationHelper();
 		dateCellStyle = pyx2015.createCellStyle();
 		dateCellStyle.setDataFormat(
@@ -50,18 +51,13 @@ public class ExcelService extends ExcelBasic{
 		monthTemplateSheet = pyx2015.getSheet(monthTemplateName);
 		Integer rowNr = findFirstDepartmentRow(monthTemplateSheet);
 //		rowNr = setPatientMovesDate(moveTodayPatientsList, monthTemplateSheet, rowNr);
-		saveExcel(pyx2015, AppConfig.applicationExcelFolderPfad+"pyx2015.xls");
+		saveExcel(pyx2015, AppConfig.applicationExcelFolderPfad+shortFileName);
 
-		try {
-			Files.copy(new File(AppConfig.applicationExcelFolderPfad+"pyx2015.xls").toPath()
-			, new File(AppConfig.innerExcelFolderPfad+"pyx2015.xls").toPath()
-			, StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		copyToWeb(shortFileName);
 
 		findDate(monthTemplateSheet);
 	}
+	
 	private void findDate(HSSFSheet sheet1) {
 		for (Row row : sheet1) {
 			Cell cell = row.getCell(0);

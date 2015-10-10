@@ -30,6 +30,8 @@ public class CmsCommonRest {
 
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public String view() { return "redirect:/view/v.html?page1"; }
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public String edit() { return "redirect:/view/v.html?page1"; }
 
 	@RequestMapping(value = "/read_user", method = RequestMethod.GET)
 	public  @ResponseBody Principal getRoleTypes(Principal userPrincipal) {

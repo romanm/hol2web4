@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<head>
+<title>BugTinyWiki view</title>
+<script type="text/javascript" src="/js/lib/angular_uk.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-rangy.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular.min.js"></script>
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+<style type="text/css" media="screen">
+body {
+	padding-top: 50px;
+	padding-bottom: 60px;
+}
+input[type="number"] {
+	width: 60px;
+}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<!-- 
+			<a href="/"><span class="glyphicon glyphicon-home"></span></a>
+			<a href="http://hol.in.ua/liklife"> <img width="42"
+			 -->
+				<a href=".."> <img width="42"
+					src="http://hol.in.ua/img/hol-kh-3.png">
+				</a> <span>Заповніть данні свого району --
+					{{data.regions[role].name}}</span>
+			</div>
+			<div class="collapse navbar-collapse navbar-right">.</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<h1>
+			<a ng-bind-html="data.title" href="/view/sah_year_leon_zwit.html"> </a>
+		</h1>
+		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
+		<table style="width: 100%">
+			<tr>
+				<td>
+					<button type="button" class="btn btn-info btn-default"
+						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
+						data-dismiss="modal">Запис</button>
+				</td>
+				<td class="text-right"><form action="/logout"
+						method="post">
+						<input type="submit" value="Sign Out" />
+					</form></td>
+			</tr>
+		</table>
+		<div ng-if="!data.regions[role]">
+		Ваш логін не надає права доступу до внесення показників районів
+		</div>
+		<table ng-if="data.regions[role]">
+			<tbody ng-repeat="paramKey in data.parameters.order">
+				<tr ng-if="data.parameters[paramKey].preParam">
+					<th colspan="2">
+						<h3>
+							{{data.preParam[data.parameters[paramKey].preParam].title}}</h3>
+					</th>
+				</tr>
+				<tr>
+					<td>{{data.parameters[paramKey].title}}</td>
+					<td><input ng-model="data.zwit[role][paramKey]" type="number"
+						size="4" ng-change="calc(departmentHol)" /></td>
+				</tr>
+			</tbody>
+		</table>
+<hr/>
+	</div>
+	<script type="text/javascript">
+		angular.module("myApp", ['textAngular']).controller("myCtrl",
+		function demoController($scope, $http) {
+
+			$http.get("/view/readSahYearZwit").success(function(data) {
+				$scope.data = data;
+				console.log($scope.data);
+			});
+
+			$http.get("/read_user").success(function(data) {
+				$scope.user = data;
+				$scope.role = $scope.user.authorities[0].authority.split("_")[1];
+			});
+
+			
+
+			$scope.saveJsonToFile = function(){
+				$http.post("/saveRegion", $scope.data).
+				then(function(response) {
+					console.log("---------success--------")
+				}, function(response) {
+					console.log("----------erros-------");
+					console.log(response);
+				});
+			}
+
+			
+			$scope.objectKeys = function(object){
+				if(object)
+					return Object.keys(object);
+				else
+					return [];
+			}
+
+		});
+	</script>
+</body>
+</html>
