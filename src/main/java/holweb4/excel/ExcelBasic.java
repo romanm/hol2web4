@@ -65,13 +65,15 @@ public class ExcelBasic {
 		return null;
 	}
 	protected HSSFWorkbook readExcel(String fileName) {
-		return readExcelFullName(AppConfig.applicationExcelFolderPfad+fileName);
+		return readExcelFullName(AppConfig.applicationDbFolderPfad+fileName);
 	}
 	public void copyToWeb(String shortFuleName) {
+		System.out.println("cp "+AppConfig.applicationDbFolderPfad+shortFuleName+" "+AppConfig.innerExcelFolderPfad+shortFuleName);
 		try {
-			Files.copy(new File(AppConfig.applicationExcelFolderPfad+shortFuleName).toPath()
+			Files.copy(new File(AppConfig.applicationDbFolderPfad+shortFuleName).toPath()
 			, new File(AppConfig.innerExcelFolderPfad+shortFuleName).toPath()
 			, StandardCopyOption.REPLACE_EXISTING);
+			System.out.println("OK");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -24,7 +24,8 @@ public class AppConfig {
 
 	//all
 	final static String applicationResourcesFolderPfad	= applicationFolderPfad+"src/main/resources/";
-	public final static String innerExcelFolderPfad	= applicationFolderPfad + "src/main/webapp/excel/";
+	public final static String innerExcelFolderPfad	= applicationFolderPfad + "src/main/webapp/view/excel/";
+//	public final static String innerExcelFolderPfad	= applicationFolderPfad + "src/main/webapp/excel/";
 	final static String sahYearZwitJsonFileName = "sah_year_zwit.json";
 	final static String sahUsersJsonFileName = "sah_users.json";
 	public static String leonSevoranShortFileName = "leon-sevoran.xls";

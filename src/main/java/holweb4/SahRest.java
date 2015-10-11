@@ -1,13 +1,12 @@
 package holweb4;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,16 +16,18 @@ import holweb4.excel.SahExcelService;
 
 @Controller
 public class SahRest {
+	private static final Logger logger = LoggerFactory.getLogger(SahRest.class);
 	@Autowired private JsonToFileService jsonToFileService;
 	@Autowired private SahExcelService sahExcelService;
 
 	@RequestMapping(value = "/view/read-excel-zait", method = RequestMethod.GET)
 	public String createReadExcell(Principal userPrincipal) {
+		logger.debug("/view/read-excel-zait");
+		logger.debug(AppConfig.leonSevoranShortFileName);
 		sahExcelService.copyToWeb(AppConfig.leonSevoranShortFileName);
-		return "redirect: excel/"+AppConfig.leonSevoranShortFileName;
+		return "redirect:/view/excel/"+AppConfig.leonSevoranShortFileName;
 	}
 
-	
 	@RequestMapping(value = "/view/readSahYearZwit", method = RequestMethod.GET)
 	public  @ResponseBody Map<String, Object> readSahYearZwit() {
 		return jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
