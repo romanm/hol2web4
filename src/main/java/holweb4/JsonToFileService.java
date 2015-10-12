@@ -82,7 +82,7 @@ public class JsonToFileService {
 		String timestampStr = AppConfig.yyyyMMddHHmmssDateFormat.format(today.toDate());
 		try {
 			Files.copy(new File(AppConfig.applicationDbFolderPfad + fileName).toPath()
-			, new File(AppConfig.applicationDbFolderPfad + "backup/" + fileName +"."+ timestampStr).toPath()
+			, new File(AppConfig.applicationDbBackupFolderPfad + fileName +"."+ timestampStr).toPath()
 			, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			e.printStackTrace();

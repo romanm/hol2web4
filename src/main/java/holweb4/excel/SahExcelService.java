@@ -36,17 +36,16 @@ public class SahExcelService extends ExcelBasic{
 		for (String paramKey : parameterOrder) {
 			int regionPosition = parameterOrder.indexOf(paramKey);
 			Integer param = (Integer) rayonZwit.get(paramKey);
-			logger.debug(paramKey+"/"+regionPosition+"/"+param);
 			if(param != null){
 				Integer paramColIndex = col1Number - 1 + regionPosition;
-				logger.debug("/"+paramColIndex);
+				logger.debug(paramKey+"/"+regionPosition+"/"+param+"/"+paramColIndex);
 				setRCIntegerValue(leonSevoranSheet,rayonRowIndex,paramColIndex,param);
 			}
 		}
 		logger.debug(AppConfig.leonSevoranFileName);
 		saveExcelFullName(leonSevoranExcel,AppConfig.leonSevoranFileName);
-		
 	}
+
 	private HSSFWorkbook readLeonSevoran() {
 		HSSFWorkbook leonSevoranExcel = readExcelFullName(AppConfig.leonSevoranFileName);
 		return leonSevoranExcel;

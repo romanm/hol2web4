@@ -48,7 +48,7 @@ public class ExcelService extends ExcelBasic{
 		monthTemplateSheet = pyx2015.getSheet(monthTemplateName);
 		Integer rowNr = findFirstDepartmentRow(monthTemplateSheet);
 //		rowNr = setPatientMovesDate(moveTodayPatientsList, monthTemplateSheet, rowNr);
-		saveExcel(pyx2015, AppConfig.applicationExcelFolderPfad+shortFileName);
+		saveExcel(pyx2015, AppConfig.applicationDbFolderPfad+shortFileName);
 
 		copyToWeb(shortFileName);
 

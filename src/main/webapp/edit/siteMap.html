@@ -17,7 +17,7 @@
 		<button ng-click="addPage()">додати сторінку</button>
 		|
 		<div ng-repeat="pageKey in pagesKeys()" class="search-result">
-			<a href="/bugtw/view.html?{{pageKey}}">{{jsonFromRam[pageKey].title}}</a>
+			<a href="/view/v.html?{{pageKey}}">{{jsonFromRam[pageKey].title}}</a>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -41,7 +41,7 @@
 			}
 
 			$scope.saveJsonToFile = function(){
-				$http.post('/saveBugTinyWiki', $scope.jsonFromRam).
+				$http.post('/saveCommonContent', $scope.jsonFromRam).
 				then(function(response) {
 					console.log("---------success--------")
 				}, function(response) {
@@ -69,9 +69,10 @@
 			}
 
 			$scope.pageKey = window.location.search.substring(1);
-			$http.get("/page1/readBugTinyWiki")
+			$http.get("/view/readContent")
 			.success(function(response) {
 				$scope.jsonFromRam = response;
+				console.log($scope.jsonFromRam);
 			});
 		});
 	</script>
