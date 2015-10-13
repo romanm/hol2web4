@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<head>
+<title>BugTinyWiki view</title>
+<script type="text/javascript" src="/js/lib/angular_uk.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-rangy.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular.min.js"></script>
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+<style type="text/css" media="screen">
+body {
+	padding-top: 50px;
+	padding-bottom: 60px;
+}
+
+input[type="number"] {
+	width: 60px;
+}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href=".."> <img width="42"
+					src="http://hol.in.ua/img/hol-kh-3.png">
+				</a> <span>Заповніть данні свого району --
+					{{data.regions[role].name}}</span>
+			</div>
+			<div class="collapse navbar-collapse navbar-right">.</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<h1>
+			<a ng-bind-html="pageData.title" href="/view/sah_year_raion_common_zwit.html">
+			</a>
+		</h1>
+		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
+
+		<table style="width: 100%">
+			<tr>
+				<td>
+					<button type="button" class="btn btn-info btn-default"
+						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
+						data-dismiss="modal">Запис</button>
+				</td>
+				<td class="text-right"><form action="/logout"
+						method="post">
+						<input type="submit" value="Sign Out" />
+					</form></td>
+			</tr>
+		</table>
+		<div ng-if="!data.regions[role]">
+		Ваш логін не надає права доступу до внесення показників районів
+		</div>
+		<table ng-if="data.regions[role]">
+			<tbody ng-repeat="paramKey in pageData.parameters.order">
+				<tr ng-if="pageData.parameters[paramKey].head == '1'">
+					<th colspan="{{objectKeys(data.regions).length + 1}}">
+						{{pageData.parameters[paramKey].title}}</th>
+				</tr>
+				<tr ng-if="pageData.parameters[paramKey].head == 'X'">
+					<th colspan="{{objectKeys(data.regions).length + 1}}">
+						{{pageData.parameters[paramKey].title}}</th>
+				</tr>
+				<tr ng-if="!pageData.parameters[paramKey].head">
+					<td>{{pageData.parameters[paramKey].title}}</td>
+					<td><input ng-model="pageData.zwit[role][paramKey]"
+						type="number" size="4" ng-change="calc(departmentHol)" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+</body>
+<script type="text/javascript">
+	angular.module("myApp", [ 'textAngular' ]).controller(
+			"myCtrl",
+			function demoController($scope, $http) {
+
+				$http.get("/view/readSahYearZwit").success(function(data) {
+					$scope.data = data;
+					console.log($scope.data);
+					$scope.pageData = data.raionCommon;
+					console.log($scope.pageData);
+				});
+
+				$http.get("/read_user").success(
+						function(data) {
+							$scope.user = data;
+							$scope.role = $scope.user.authorities[0].authority
+									.split("_")[1];
+						});
+
+				$scope.saveJsonToFile = function() {
+					$http.post("/saveRegionCommon", $scope.data).then(
+							function(response) {
+								console.log("---------success--------")
+							}, function(response) {
+								console.log("----------erros-------");
+								console.log(response);
+							});
+				}
+
+				$scope.objectKeys = function(object) {
+					if (object)
+						return Object.keys(object);
+					else
+						return [];
+				}
+
+			});
+</script>
+</html>

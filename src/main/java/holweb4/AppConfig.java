@@ -17,7 +17,7 @@ public class AppConfig {
 	//development
 	final static String applicationFolderPfad = "/home/roman/algoritmed.com/development/hol2web4/";
 	public final static String applicationDbFolderPfad	= "/home/roman/algoritmed.com/development/db-hol2web4/";
-	static String applicationDbBackupFolderPfad = "/home/roman/algoritmed.com/development/hol2web4-backup/";
+	static String applicationDbBackupFolderPfad = "/home/roman/algoritmed.com/development/db-hol2web4-backup/";
 	final static String urlDb = "jdbc:h2:tcp://localhost/holweb4/holweb4";
 //	public final static String applicationExcelFolderPfad	= applicationFolderPfad+"src/main/webapp/excel/";
 

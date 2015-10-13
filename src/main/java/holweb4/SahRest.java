@@ -1,6 +1,7 @@
 package holweb4;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -33,6 +34,28 @@ public class SahRest {
 		return jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 	}
 
+	@RequestMapping(value = "/saveRegionCommon", method = RequestMethod.POST)
+	public  @ResponseBody Map<String, Object> saveSahCommon(@RequestBody Map<String, Object> qaJsonJavaObject, Principal userPrincipal) {
+		String name = userPrincipal.getName();
+		String key = name;
+		System.out.println(name);
+		Map<String, Object> raionCommon_request = (Map<String, Object>) qaJsonJavaObject.get("raionCommon");
+		Map<String, Object> raionCommon_requestZwit = (Map<String, Object>) raionCommon_request.get("zwit");
+		Map<String, Object> raionCommonZwit_new = (Map<String, Object>) raionCommon_requestZwit.get(key);
+		System.out.println(name);
+		Map<String, Object> sahYearZwitJsonFile = jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
+		Map<String, Object> raionCommon_file = (Map<String, Object>) sahYearZwitJsonFile.get("raionCommon");
+		Map<String, Object> raionCommon_fileZwit = (Map<String, Object>) raionCommon_file.get("zwit");
+		if(raionCommon_fileZwit == null)
+		{
+			raionCommon_fileZwit = new HashMap<String, Object>();
+			raionCommon_file.put("zwit", raionCommon_fileZwit);
+		}
+		raionCommon_fileZwit.put(key, raionCommonZwit_new);
+		jsonToFileService.saveJsonToFile(sahYearZwitJsonFile,AppConfig.sahYearZwitJsonFileName);
+		jsonToFileService.backup(AppConfig.sahYearZwitJsonFileName);
+		return sahYearZwitJsonFile;
+	}
 	@RequestMapping(value = "/saveRegion", method = RequestMethod.POST)
 	public  @ResponseBody Map<String, Object> saveSah(@RequestBody Map<String, Object> qaJsonJavaObject, Principal userPrincipal) {
 		String name = userPrincipal.getName();
@@ -45,7 +68,7 @@ public class SahRest {
 		jsonToFileService.saveJsonToFile(sahYearZwitJsonFile,AppConfig.sahYearZwitJsonFileName);
 		jsonToFileService.backup(AppConfig.sahYearZwitJsonFileName);
 		sahExcelService.saveLeonSevoran(sahYearZwitJsonFile,key);
-		return qaJsonJavaObject;
+		return sahYearZwitJsonFile;
 	}
 
 }
