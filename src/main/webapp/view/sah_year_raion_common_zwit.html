@@ -97,6 +97,14 @@ background-color: yellow;
 					{{pageData.parameters[paramKey].title}}
 					</th>
 				</tr>
+				<!-- 
+				<tr ng-if="pageData.parameters[paramKey].head == 'X'">
+					<th>
+					{{pageData.parameters[paramKey].title}}
+					</th>
+					<th ng-repeat="regionKey in data.regions.order">X</th>
+				</tr>
+				 -->
 				<tr ng-if="!pageData.parameters[paramKey].head">
 					<td>
 					{{pageData.parameters[paramKey].title}}

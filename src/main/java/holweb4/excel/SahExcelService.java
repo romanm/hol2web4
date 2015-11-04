@@ -16,6 +16,35 @@ public class SahExcelService extends ExcelBasic{
 	private static final Logger logger = LoggerFactory.getLogger(ExcelService.class);
 
 	
+	public void saveAthEmployReport(Map<String, Object> sahYearZwitJsonFile, String rayonKey) {
+		HSSFWorkbook leonSevoranExcel = readLeonSevoran();
+		HSSFSheet dbAthEmployReportSheet = leonSevoranExcel.getSheet("бд.звіту.служби");
+		
+		Map<String, Object> raionCommon_request = (Map<String, Object>) sahYearZwitJsonFile.get("raionCommon");
+		Map<String, Object> regions = (Map<String, Object>) sahYearZwitJsonFile.get("regions");
+		List<String> regionOrder = (List<String>) regions.get("order");
+		int rayonPosition = regionOrder.indexOf(rayonKey);
+		Integer col1Number = (Integer) raionCommon_request.get("col1Number");
+		Integer rayonColIndex = col1Number - 1 + rayonPosition;
+		
+		Map<String, Object> raionCommonZwit_new = (Map<String, Object>) ((Map<String, Object>) raionCommon_request.get("zwit")).get(rayonKey);
+
+		Map<String, Object> parameters = (Map<String, Object>) raionCommon_request.get("parameters");
+		Integer row1Number = (Integer) raionCommon_request.get("row1Number");
+		List<String> parameterOrder = (List<String>) parameters.get("order");
+		
+		logger.debug("::"+row1Number+"/"+rayonColIndex);
+		for (String paramKey : parameterOrder) {
+			int regionPosition = parameterOrder.indexOf(paramKey);
+			Integer param = (Integer) raionCommonZwit_new.get(paramKey);
+			if(param != null){
+				Integer paramRowIndex = row1Number - 1 + regionPosition;
+				logger.debug(paramKey+"/"+param+"::"+paramRowIndex+"/"+rayonColIndex);
+				setRCIntegerValue(dbAthEmployReportSheet,paramRowIndex,rayonColIndex,param);
+			}
+		}
+		saveExcelFullName(leonSevoranExcel,AppConfig.leonSevoranFileName);
+	}
 	public void saveLeonSevoran(Map<String, Object> sahYearZwitJsonFile, String rayonKey) {
 		HSSFWorkbook leonSevoranExcel = readLeonSevoran();
 		logger.debug("Hello world! "+leonSevoranExcel);
