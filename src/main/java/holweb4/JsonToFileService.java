@@ -36,14 +36,15 @@ public class JsonToFileService {
 		}
 	}
 	public Map<String, Object> readBackupFile(String fileName) {
-		String fullFileName = AppConfig.applicationDbFolderPfad+"backup/"+fileName;
+		String fullFileName = AppConfig.applicationDbBackupFolderPfad+fileName;
+//		String fullFileName = AppConfig.applicationDbFolderPfad+"backup/"+fileName;
 		File file = new File(fullFileName);
 		Map<String, Object> readJsonFromFullFileName = readJsonFromFullFileName(file);
 		return readJsonFromFullFileName;
 	}
 	public List<Map<String, Object>> readBackupFiles(String fileName) {
 		List<Map<String, Object>> backulFileList = new ArrayList<Map<String,Object>>();
-		String backupDir = AppConfig.applicationDbFolderPfad+"backup/";
+		String backupDir = AppConfig.applicationDbBackupFolderPfad;
 		File file = new File(backupDir);
 		if(file.isDirectory())
 			for (String string : file.list()) {

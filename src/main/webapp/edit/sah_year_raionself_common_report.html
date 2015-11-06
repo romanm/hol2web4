@@ -7,6 +7,8 @@
 <script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
 <script type="text/javascript" src="/js/lib/textAngular.min.js"></script>
 <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+<link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+<link rel="stylesheet" href="/css/lib/textAngular.css">
 <style type="text/css" media="screen">
 body {
 	padding-top: 50px;
@@ -24,37 +26,46 @@ input[type="number"] {
 			<div class="navbar-header">
 				<a href=".."> <img width="42"
 					src="http://hol.in.ua/img/hol-kh-3.png">
-				</a> <span>Заповніть данні свого району --
-					{{data.regions[role].name}}</span>
+				</a>/ <span>{{data.regions[role].name}}</span> /
+				
+				<span>Заповніть данні звіту</span>
 			</div>
-			<div class="collapse navbar-collapse navbar-right">.</div>
+			<div class="collapse navbar-collapse navbar-right">
+			<button type="button" class="btn btn-info btn-default"
+						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
+						data-dismiss="modal">Запис</button>
+			</div>
 		</div>
 	</nav>
 
 	<div class="container">
-		<h1>
-			<a ng-bind-html="pageData.title" href="/view/sah_year_raion_common_zwit.html">
-			</a>
-		</h1>
+		<h1 ng-bind-html="pageData.title"></h1>
 		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
 
-		<table style="width: 100%">
+		<table style="width: 100%" class="navbar navbar-default">
 			<tr>
 				<td>
 					<button type="button" class="btn btn-info btn-default"
 						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
 						data-dismiss="modal">Запис</button>
 				</td>
-				<td class="text-right"><form action="/logout"
-						method="post">
-						<input type="submit" value="Sign Out" />
-					</form></td>
+				<td class="text-right">
+					<form action="/logout" method="post">
+						<a href="sah_raion_page.html"> <span
+							class="glyphicon glyphicon-home" aria-hidden="true"></span>
+							Сторінка <span>{{data.regions[role].name}}</span>
+						</a>| <a href="sah_year_raion_common_report_print.html"> <span
+							class="glyphicon glyphicon-print" aria-hidden="true"></span> Друк
+						</a> <input type="submit" value="Вийти з аккаунта" />
+					</form>
+				</td>
 			</tr>
 		</table>
 		<div ng-if="!data.regions[role]">
 		Ваш логін не надає права доступу до внесення показників районів
 		</div>
-		<table ng-if="data.regions[role]">
+		<table ng-if="data.regions[role]"
+			class="table table-bordered table-hover">
 			<tbody ng-repeat="paramKey in pageData.parameters.order">
 				<tr ng-if="pageData.parameters[paramKey].head == '1'">
 					<th colspan="{{objectKeys(data.regions).length + 1}}">
@@ -65,16 +76,37 @@ input[type="number"] {
 						{{pageData.parameters[paramKey].title}}</th>
 				</tr>
 				<tr ng-if="!pageData.parameters[paramKey].head">
-					<td>{{pageData.parameters[paramKey].title}}</td>
 					<td><input ng-model="pageData.zwit[role][paramKey]"
 						type="number" size="4" ng-change="calc(departmentHol)" /></td>
+					<td>{{pageData.parameters[paramKey].title}}</td>
 				</tr>
 			</tbody>
 		</table>
+		<div text-angular ng-model="pageData.zwit[role].propose" name="demo-editor"
+			ta-text-editor-class="border-around container"
+			ta-html-editor-class="border-around"></div>
+			<hr/>
+		<div>
+			<p ng-repeat="signature in pageData.zwit[role].signatures"
+				class="row">
+				<input ng-model="pageData.zwit[role].signatures[$index].text"
+					type="text" placeholder="Ім’я і посада для підпису"
+					class="col-md-4" /> <span class="col-md-6">
+					_________________________________________________</span> <span
+					class="col-md-2">
+					<button type="button" class="btn btn-info btn-default"
+						ng-click="delSignature($index)">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+				</span>
+			</p>
+			<button type="button" class="btn btn-info btn-default"
+				ng-click="addSignature()">додати підпис</button>
+		</div>
+
 	</div>
 	
 	
-</body>
 <script type="text/javascript">
 	angular.module("myApp", [ 'textAngular' ]).controller(
 			"myCtrl",
@@ -94,6 +126,22 @@ input[type="number"] {
 									.split("_")[1];
 						});
 
+				$scope.delSignature = function(index) {
+					console.log("delSignature - "+index);
+					$scope.pageData.zwit[$scope.role].signatures.splice(index,1);
+				}
+				$scope.addSignature = function() {
+					console.log("addSignature");
+					console.log($scope.pageData.zwit[$scope.role]);
+					
+					if(!$scope.pageData.zwit[$scope.role].signatures){
+						$scope.pageData.zwit[$scope.role].signatures = [{"text":""}];
+					}else{
+						$scope.pageData.zwit[$scope.role].signatures.push({"text":""});
+					}
+					console.log($scope.pageData.zwit[$scope.role].signatures);
+				}
+					
 				$scope.saveJsonToFile = function() {
 					$http.post("/saveRegionCommon", $scope.data).then(
 							function(response) {
@@ -113,4 +161,5 @@ input[type="number"] {
 
 			});
 </script>
+</body>
 </html>

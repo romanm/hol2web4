@@ -30,32 +30,42 @@ input[type="number"] {
 				</a> <span>Заповніть данні свого району --
 					{{data.regions[role].name}}</span>
 			</div>
-			<div class="collapse navbar-collapse navbar-right">.</div>
+			<div class="collapse navbar-collapse navbar-right">
+				<button type="button" class="btn btn-info btn-default"
+					ng-if="data.regions[role]" ng-click="saveJsonToFile()"
+					data-dismiss="modal">Запис</button>
+			</div>
 		</div>
 	</nav>
 
 	<div class="container">
-		<h1>
-			<a ng-bind-html="data.title" href="/view/sah_year_leon_zwit.html"> </a>
-		</h1>
+		<h1 ng-bind-html="data.title"></h1>
 		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
+		<!-- 
 		<table style="width: 100%">
+		<table class="table navbar navbar-default">
+		 -->
+		<table style="width: 100%" class="navbar navbar-default">
 			<tr>
 				<td>
 					<button type="button" class="btn btn-info btn-default"
 						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
 						data-dismiss="modal">Запис</button>
 				</td>
-				<td class="text-right"><form action="/logout"
-						method="post">
-						<input type="submit" value="Sign Out" />
+				<td class="text-right"><form action="/logout" method="post">
+						<a href="sah_raion_page.html"> <span
+							class="glyphicon glyphicon-home" aria-hidden="true"></span>
+							Сторінка <span>{{data.regions[role].name}}</span>
+						</a>| <a href="sah_inhal_report_print.html"> <span
+							class="glyphicon glyphicon-print" aria-hidden="true"></span> Друк
+						</a> <input type="submit" value="Вийти з аккаунта" />
 					</form></td>
 			</tr>
 		</table>
-		<div ng-if="!data.regions[role]">
-		Ваш логін не надає права доступу до внесення показників районів
-		</div>
-		<table ng-if="data.regions[role]">
+		<div ng-if="!data.regions[role]">Ваш логін не надає права
+			доступу до внесення показників районів</div>
+		<table ng-if="data.regions[role]"
+			class="table table-bordered table-hover">
 			<tbody ng-repeat="paramKey in data.parameters.order">
 				<tr ng-if="data.parameters[paramKey].preParam">
 					<th colspan="2">
@@ -64,13 +74,30 @@ input[type="number"] {
 					</th>
 				</tr>
 				<tr>
-					<td>{{data.parameters[paramKey].title}}</td>
 					<td><input ng-model="data.zwit[role][paramKey]" type="number"
 						size="4" ng-change="calc(departmentHol)" /></td>
+					<td>{{data.parameters[paramKey].title}}</td>
 				</tr>
 			</tbody>
 		</table>
-<hr/>
+		<hr />
+		<div>
+			<p ng-repeat="signature in pageData.zwit[role].signatures"
+				class="row">
+				<input ng-model="pageData.zwit[role].signatures[$index].text"
+					type="text" placeholder="Ім’я і посада для підпису"
+					class="col-md-4" /> <span class="col-md-6">
+					_________________________________________________</span> <span
+					class="col-md-2">
+					<button type="button" class="btn btn-info btn-default"
+						ng-click="delSignature($index)">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+				</span>
+			</p>
+			<button type="button" class="btn btn-info btn-default"
+				ng-click="addSignature()">додати підпис</button>
+		</div>
 	</div>
 	<script type="text/javascript">
 		angular.module("myApp", ['textAngular']).controller("myCtrl",
@@ -79,6 +106,7 @@ input[type="number"] {
 			$http.get("/view/readSahYearZwit").success(function(data) {
 				$scope.data = data;
 				console.log($scope.data);
+				$scope.pageData = data.raionCommon;
 			});
 
 			$http.get("/read_user").success(function(data) {
@@ -86,7 +114,22 @@ input[type="number"] {
 				$scope.role = $scope.user.authorities[0].authority.split("_")[1];
 			});
 
-			
+			$scope.delSignature = function(index) {
+				console.log("delSignature - "+index);
+				$scope.pageData.zwit[$scope.role].signatures.splice(index,1);
+			}
+
+			$scope.addSignature = function() {
+				console.log("addSignature");
+				console.log($scope.pageData.zwit[$scope.role]);
+				
+				if(!$scope.pageData.zwit[$scope.role].signatures){
+					$scope.pageData.zwit[$scope.role].signatures = [{"text":""}];
+				}else{
+					$scope.pageData.zwit[$scope.role].signatures.push({"text":""});
+				}
+				console.log($scope.pageData.zwit[$scope.role].signatures);
+			}
 
 			$scope.saveJsonToFile = function(){
 				$http.post("/saveRegion", $scope.data).

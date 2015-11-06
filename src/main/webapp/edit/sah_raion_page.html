@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="myCtrl">
+<head>
+<title>Звіт {{data.regions[role].name}}</title>
+<script type="text/javascript" src="/js/lib/angular_uk.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-rangy.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular.min.js"></script>
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+<link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+<style type="text/css" media="screen">
+body {
+	padding-top: 50px;
+	padding-bottom: 60px;
+}
+.uppercase {
+	text-transform: uppercase;
+}
+@media print {
+	.page-break{
+		page-break-before: always;
+	}
+}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href=".."> <img width="42"
+					src="http://hol.in.ua/img/hol-kh-3.png">
+				</a>/ <span>{{data.regions[role].name}}</span> 
+			</div>
+			<div class="collapse navbar-collapse navbar-right">
+				
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<h2>{{data.regions[role].name}}</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<h3>Заповніть данні свого району</h3>
+				<!-- 
+				<h3 class="uppercase">район</h3>
+				 -->
+				<hr />
+				<ol>
+					<li><a href="sah_year_raionself_common_report.html"> ЗВІТ
+							ПРО РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ ДЛЯ
+							ДОРОСЛИХ </a></li>
+					<li><a href="/edit/sah_inhal_report.html">Апаратура та
+							інгаляційні анестетіки</a></li>
+				</ol>
+				<h3>Архів копії з підписом</h3>
+				<a href="sah_archive.html"> архів </a>
+			</div>
+			<div class="col-md-6">
+				<h3 class="uppercase">область</h3>
+				<hr />
+				<ol>
+					<li><a href="/view/sah_year_raion_common_zwit.html"> ЗВІТ
+							ПРО РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ ДЛЯ
+							ДОРОСЛИХ Хмельницької ОБЛАСТІ ЗА 2015-Й РІК </a></li>
+					<li><a href="/view/sah_year_leon_zwit.html">Апаратура
+							та інгаляційні анестетіки</a></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	angular.module("myApp", [ 'textAngular' ]).controller(
+			"myCtrl",
+			function demoController($scope, $http) {
+
+				$http.get("/view/readSahYearZwit").success(function(data) {
+					$scope.data = data;
+					console.log($scope.data);
+					$scope.pageData = data.raionCommon;
+					console.log($scope.pageData);
+				});
+
+				$http.get("/read_user").success(
+						function(data) {
+							$scope.user = data;
+							$scope.role = $scope.user.authorities[0].authority
+									.split("_")[1];
+						});
+
+				$scope.saveJsonToFile = function() {
+					$http.post("/saveRegionCommon", $scope.data).then(
+							function(response) {
+								console.log("---------success--------")
+							}, function(response) {
+								console.log("----------erros-------");
+								console.log(response);
+							});
+				}
+
+				$scope.objectKeys = function(object) {
+					if (object)
+						return Object.keys(object);
+					else
+						return [];
+				}
+
+			});
+</script>
+</html>

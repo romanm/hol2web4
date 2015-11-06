@@ -34,14 +34,19 @@ public class SahRest {
 		return jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 	}
 
+	private Map<String, Object> getRaionCommonZwit(Map<String, Object> qaJsonJavaObject, String rayonKey) {
+		Map<String, Object> raionCommon_request = (Map<String, Object>) qaJsonJavaObject.get("raionCommon");
+		Map<String, Object> raionCommon_requestZwit = (Map<String, Object>) raionCommon_request.get("zwit");
+		Map<String, Object> raionCommonZwit_new = (Map<String, Object>) raionCommon_requestZwit.get(rayonKey);
+		return raionCommonZwit_new;
+	}
+
 	@RequestMapping(value = "/saveRegionCommon", method = RequestMethod.POST)
 	public  @ResponseBody Map<String, Object> saveSahCommon(@RequestBody Map<String, Object> qaJsonJavaObject, Principal userPrincipal) {
 		String name = userPrincipal.getName();
 		String rayonKey = name;
 		System.out.println(name);
-		Map<String, Object> raionCommon_request = (Map<String, Object>) qaJsonJavaObject.get("raionCommon");
-		Map<String, Object> raionCommon_requestZwit = (Map<String, Object>) raionCommon_request.get("zwit");
-		Map<String, Object> raionCommonZwit_new = (Map<String, Object>) raionCommon_requestZwit.get(rayonKey);
+		Map<String, Object> raionCommonZwit_new = getRaionCommonZwit(qaJsonJavaObject, rayonKey);
 		System.out.println(name);
 		Map<String, Object> sahYearZwitJsonFile = jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 		Map<String, Object> raionCommon_file = (Map<String, Object>) sahYearZwitJsonFile.get("raionCommon");
@@ -57,6 +62,7 @@ public class SahRest {
 		sahExcelService.saveAthEmployReport(sahYearZwitJsonFile, rayonKey);
 		return sahYearZwitJsonFile;
 	}
+
 	@RequestMapping(value = "/saveRegion", method = RequestMethod.POST)
 	public  @ResponseBody Map<String, Object> saveSah(@RequestBody Map<String, Object> qaJsonJavaObject, Principal userPrincipal) {
 		String name = userPrincipal.getName();
@@ -66,6 +72,9 @@ public class SahRest {
 		Map<String, Object> sahYearZwitJsonFile = jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 		Map<String, Object> zwit = (Map<String, Object>) sahYearZwitJsonFile.get("zwit");
 		zwit.put(rayonKey, rayonZwit_new);
+		
+		Map<String, Object> raionCommonZwit_new = getRaionCommonZwit(qaJsonJavaObject, rayonKey);
+		
 		jsonToFileService.saveJsonToFile(sahYearZwitJsonFile,AppConfig.sahYearZwitJsonFileName);
 		jsonToFileService.backup(AppConfig.sahYearZwitJsonFileName);
 		sahExcelService.saveLeonSevoran(sahYearZwitJsonFile,rayonKey);
