@@ -13,9 +13,7 @@ body {
 	padding-top: 50px;
 	padding-bottom: 60px;
 }
-.uppercase {
-	text-transform: uppercase;
-}
+
 @media print {
 	.page-break{
 		page-break-before: always;
@@ -29,44 +27,42 @@ body {
 			<div class="navbar-header">
 				<a href=".."> <img width="42"
 					src="http://hol.in.ua/img/hol-kh-3.png">
-				</a>/ <span>{{data.regions[role].name}}</span> 
+				</a>/ <span>{{data.regions[role].name}}</span> / <span><span>версія
+						для друку</span></span>
 			</div>
 			<div class="collapse navbar-collapse navbar-right">
-				
+				<a href="sah-robota-raion-zwit.html">
+				Редагувати
+				</a>
 			</div>
 		</div>
 	</nav>
 	<div class="container">
+		<h1>{{pageData.title}}</h1>
 		<h2>{{data.regions[role].name}}</h2>
-		<div class="row">
-			<div class="col-md-6">
-				<h3>Заповніть данні свого району</h3>
-				<!-- 
-				<h3 class="uppercase">район</h3>
-				 -->
-				<hr />
-				<ol>
-					<li><a href="sah_year_raionself_common_report.html"> ЗВІТ
-							ПРО РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ ДЛЯ
-							ДОРОСЛИХ </a></li>
-					<li><a href="/edit/sah_inhal_report.html">Апаратура та
-							інгаляційні анестетіки</a></li>
-				</ol>
-				<h3>Архів копії з підписом</h3>
-				<a href="sah_archive.html"> архів </a>
-			</div>
-			<div class="col-md-6">
-				<h3 class="uppercase">область</h3>
-				<hr />
-				<ol>
-					<li><a href="/view/sah_year_raion_common_zwit.html"> ЗВІТ
-							ПРО РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ ДЛЯ
-							ДОРОСЛИХ Хмельницької ОБЛАСТІ ЗА 2015-Й РІК </a></li>
-					<li><a href="/view/sah_year_leon_zwit.html">Апаратура
-							та інгаляційні анестетіки</a></li>
-				</ol>
-			</div>
-		</div>
+		<table ng-if="data.regions[role]" class="table table-bordered table-hover">
+			<tbody ng-repeat="paramKey in pageData.parameters.order">
+				<tr ng-if="pageData.parameters[paramKey].head == '1'">
+					<th colspan="2"><div
+							class="{{pageData.parameters[paramKey].class}}">
+							{{pageData.parameters[paramKey].title}}</div></th>
+				</tr>
+				<tr ng-if="pageData.parameters[paramKey].head == 'X'">
+					<th colspan="2">
+						{{pageData.parameters[paramKey].title}}</th>
+				</tr>
+				<tr ng-if="!pageData.parameters[paramKey].head">
+					<td>{{pageData.zwit[role][paramKey]}}</td>
+					<td>{{pageData.parameters[paramKey].title}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div ng-bind-html="pageData.zwit[role].propose"></div>
+			<hr/>
+		<p ng-repeat="signature in data.regions[role].signatures">
+			{{signature.text}} _________________________________________________
+			<br /> <br />
+		</p>
 	</div>
 </body>
 <script type="text/javascript">

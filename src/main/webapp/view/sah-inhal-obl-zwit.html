@@ -19,6 +19,11 @@ input[type="number"] {
 .lightingRegionKey{
 background-color: yellow;
 }
+.navbar2 {
+	border-radius: 4px;
+	min-height: 35px;
+	border: 1px solid #E7E7E7;
+}
 </style>
 </head>
 <body>
@@ -41,28 +46,33 @@ background-color: yellow;
 		<h1 ng-bind-html="data.title">
 			title
 		</h1>
-		<table style="width: 100%">
-			<tr>
-				<td>
-					<h2>
-						<a href="/edit/sah_inhal_report.html"> Заповніть данні
-							свого району -- </a> {{data.regions[user.name].name}}
-					</h2>
-				</td>
-				<td>
-				<a href="/view/read-excel-zait"> <i
-								class="fa fa-file-excel-o fa-2x"></i>
-						</a>
-				</td>
-				<td class="text-right">
-					<form action="/logout" method="post">
-						<input type="submit" value="Sign Out" />
-					</form> <small>Якщо це не ваш район, залогіньтесь з данними свого
-						району.</small>
-				</td>
-			</tr>
-		</table>
-		<hr/>
+		<div class="row navbar2 navbar-default">
+			<div class="col-sm-6" style="font-size: 20px;">
+				<b class=""> <a href="/edit/sah-inhal-raion-zwit.html">
+						Заповніть данні свого району -- </a> {{data.regions[user.name].name}}
+				</b>
+			</div>
+			<div class="col-sm-1">
+				<a href="/view/sah-zwit-excel"> <i
+						class="fa fa-file-excel-o fa-2x"></i>
+				</a>
+			</div>
+			<div class="col-sm-5 text-right">
+				<form ng-if="user.name!=null" action="/logout" method="post">
+					<input type="submit"
+						class="btn btn-info btn-default" value="Вийти з аккаунта" />
+				</form>
+				<a ng-if="user.name==null" class="btn btn-info btn-default"
+					href="/edit/sah-inhal-raion-zwit.html"> Увійти в систему </a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-7">&nbsp;</div>
+			<div class="col-md-5 text-right" ng-if="user.name!=null">
+				<small>Якщо це не ваш район, залогіньтесь з данними свого
+					району.</small>
+			</div>
+		</div>
 		<div><b> Міста: </b> <span ng-repeat="regionKey in data.regions.order"
 				ng-class="{lightingRegionKey:lightingRegionKey==regionKey}"
 				ng-if="regionKey.substring(2,3) != 'r'"> {{$index + 1}} - <a

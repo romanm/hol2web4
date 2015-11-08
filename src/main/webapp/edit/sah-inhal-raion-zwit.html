@@ -15,53 +15,62 @@ body {
 input[type="number"] {
 	width: 60px;
 }
+.navbar2 {
+	border-radius: 4px;
+	min-height: 35px;
+	border: 1px solid #E7E7E7;
+}
 </style>
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
+		<div class="row">
 			<div class="navbar-header">
-				<!-- 
-			<a href="/"><span class="glyphicon glyphicon-home"></span></a>
-			<a href="http://hol.in.ua/liklife"> <img width="42"
-			 -->
-				<a href=".."> <img width="42"
+				<img width="28"
 					src="http://hol.in.ua/img/hol-kh-3.png">
-				</a> <span>Заповніть данні свого району --
+				 <span>Заповніть данні свого району --
 					{{data.regions[role].name}}</span>
 			</div>
-			<div class="collapse navbar-collapse navbar-right">
+			<div class="navbar-right">
 				<button type="button" class="btn btn-info btn-default"
 					ng-if="data.regions[role]" ng-click="saveJsonToFile()"
 					data-dismiss="modal">Запис</button>
 			</div>
+		</div>
 		</div>
 	</nav>
 
 	<div class="container">
 		<h1 ng-bind-html="data.title"></h1>
 		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
-		<!-- 
-		<table style="width: 100%">
-		<table class="table navbar navbar-default">
-		 -->
-		<table style="width: 100%" class="navbar navbar-default">
-			<tr>
-				<td>
-					<button type="button" class="btn btn-info btn-default"
-						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
-						data-dismiss="modal">Запис</button>
-				</td>
-				<td class="text-right"><form action="/logout" method="post">
-						<a href="sah_raion_page.html"> <span
-							class="glyphicon glyphicon-home" aria-hidden="true"></span>
-							Сторінка <span>{{data.regions[role].name}}</span>
-						</a>| <a href="sah_inhal_report_print.html"> <span
-							class="glyphicon glyphicon-print" aria-hidden="true"></span> Друк
-						</a> <input type="submit" value="Вийти з аккаунта" />
-					</form></td>
-			</tr>
-		</table>
+		
+		<div class="navbar2 navbar-default">
+			<div class="col-sm-6">
+				<button type="button" class="btn btn-info btn-default"
+					ng-if="data.regions[role]" ng-click="saveJsonToFile()"
+					data-dismiss="modal">Запис</button>
+			</div>
+			<div class="col-sm-6 text-right">
+				<form action="/logout" method="post">
+					<a href="/view/sah-raion-zwit.html"> <span
+						class="glyphicon glyphicon-home" aria-hidden="true"></span>
+						Сторінка <span>{{data.regions[role].name}}</span>
+					</a>| <a href="sah-inhal-raion-zwit-druk.html"> <span
+						class="glyphicon glyphicon-print" aria-hidden="true"></span> Друк
+					</a> <input class="btn btn-info btn-default" type="submit"
+						value="Вийти з аккаунта" />
+
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-7"></div>
+			<div class="col-md-5 text-right">
+				<small>Якщо це не ваш район, залогіньтесь з данними свого
+					району.</small>
+			</div>
+		</div>
 		<div ng-if="!data.regions[role]">Ваш логін не надає права
 			доступу до внесення показників районів</div>
 		<table ng-if="data.regions[role]"
@@ -82,11 +91,10 @@ input[type="number"] {
 		</table>
 		<hr />
 		<div>
-			<p ng-repeat="signature in pageData.zwit[role].signatures"
-				class="row">
-				<input ng-model="pageData.zwit[role].signatures[$index].text"
-					type="text" placeholder="Ім’я і посада для підпису"
-					class="col-md-4" /> <span class="col-md-6">
+			<p ng-repeat="signature in data.regions[role].signatures" class="row">
+				<input ng-model="signature.text" type="text"
+					placeholder="Ім’я і посада для підпису" class="col-md-4" /> <span
+					class="col-md-6">
 					_________________________________________________</span> <span
 					class="col-md-2">
 					<button type="button" class="btn btn-info btn-default"

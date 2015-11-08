@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <head>
-<title>BugTinyWiki view</title>
+<title>Звіт про роботу</title>
 <script type="text/javascript" src="/js/lib/angular_uk.min.js"></script>
 <script type="text/javascript" src="/js/lib/textAngular-rangy.min.js"></script>
 <script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
@@ -19,10 +19,15 @@ input[type="number"] {
 .lightingRegionKey{
 background-color: yellow;
 }
+.navbar2 {
+	border-radius: 4px;
+	min-height: 35px;
+	border: 1px solid #E7E7E7;
+}
 </style>
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
 				<a href=".."> <img width="42"
@@ -35,25 +40,44 @@ background-color: yellow;
 
 	<div class="container">
 		<h1 ng-bind-html="pageData.title">title</h1>
-		<table style="width: 100%">
+		<div class="row navbar2 navbar-default">
+			<div class="col-sm-6" style="font-size: 20px;">
+				<b class=""> <a href="/edit/sah-robota-raion-zwit.html">
+						Заповніть данні свого району -- </a> {{data.regions[user.name].name}}
+				</b>
+			</div>
+			<div class="col-sm-1">
+				<a href="/view/read-excel-zait"> <i
+					class="fa fa-file-excel-o fa-2x"></i>
+				</a>
+			</div>
+			<div class="col-sm-5 text-right">
+				<form ng-if="user.name!=null" action="/logout" method="post">
+					<input type="submit"
+						class="btn btn-info btn-default" value="Вийти з аккаунта" />
+				</form>
+				<a ng-if="user.name==null" class="btn btn-info btn-default"
+					href="/edit/sah-robota-raion-zwit.html"> Увійти в систему </a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-7">&nbsp;</div>
+			<div class="col-md-5 text-right" ng-if="user.name!=null">
+				<small>Якщо це не ваш район, залогіньтесь з данними свого
+					району.</small>
+			</div>
+		</div>
+		<!-- 
+		<table style="width: 100%" class="navbar navbar-default">
 			<tr>
 				<td>
-					<h2>
-						<a href="/edit/sah_year_raionself_common_report.html"> Заповніть данні свого
-							району -- </a> {{data.regions[user.name].name}}
-					</h2>
 				</td>
-				<td><a href="/view/read-excel-zait"> <i
-						class="fa fa-file-excel-o fa-2x"></i>
-				</a></td>
+				<td></td>
 				<td class="text-right">
-					<form action="/logout" method="post">
-						<input type="submit" value="Sign Out" />
-					</form> <small>Якщо це не ваш район, залогіньтесь з данними свого
-						району.</small>
 				</td>
 			</tr>
 		</table>
+		 -->
 		
 				<hr/>
 		<div><b> Міста: </b> <span ng-repeat="regionKey in data.regions.order"

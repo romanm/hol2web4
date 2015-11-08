@@ -13,10 +13,15 @@ body {
 	padding-top: 50px;
 	padding-bottom: 60px;
 }
-
+.ta-hidden-input {
+	display: none;
+}
 @media print {
-	.page-break{
+	.page-break {
 		page-break-before: always;
+	}
+	.ta-hidden-input {
+		display: none;
 	}
 }
 </style>
@@ -31,39 +36,34 @@ body {
 						для друку</span></span>
 			</div>
 			<div class="collapse navbar-collapse navbar-right">
-				<a href="sah_inhal_report.html">
-				Редагувати
-				</a>
+				<a href="sah-inhal-raion-zwit.html"> Редагувати </a>
 			</div>
 		</div>
 	</nav>
 	<div class="container">
-		<h1>{{pageData.title}}</h1>
+		<h1 ng-bind-html="data.title"></h1>
 		<h2>{{data.regions[role].name}}</h2>
-		<table ng-if="data.regions[role]" class="table table-bordered table-hover">
-			<tbody ng-repeat="paramKey in pageData.parameters.order">
-				<tr ng-if="pageData.parameters[paramKey].head == '1'">
-					<th colspan="2"><div
-							class="{{pageData.parameters[paramKey].class}}">
-							{{pageData.parameters[paramKey].title}}</div></th>
-				</tr>
-				<tr ng-if="pageData.parameters[paramKey].head == 'X'">
+		<table ng-if="data.regions[role]"
+			class="table table-bordered table-hover">
+			<tbody ng-repeat="paramKey in data.parameters.order">
+				<tr ng-if="data.parameters[paramKey].preParam">
 					<th colspan="2">
-						{{pageData.parameters[paramKey].title}}</th>
+						<h3>
+							{{data.preParam[data.parameters[paramKey].preParam].title}}</h3>
+					</th>
 				</tr>
-				<tr ng-if="!pageData.parameters[paramKey].head">
-					<td>{{pageData.zwit[role][paramKey]}}</td>
-					<td>{{pageData.parameters[paramKey].title}}</td>
+				<tr>
+					<td ng-bind-html="data.zwit[role][paramKey]"></td>
+					<td>{{data.parameters[paramKey].title}}</td>
 				</tr>
 			</tbody>
 		</table>
-		<div ng-bind-html="pageData.zwit[role].propose"></div>
-			<hr/>
-		<p ng-repeat="signature in pageData.zwit[role].signatures">
-		{{pageData.zwit[role].signatures[$index].text}}
-			_________________________________________________
-			<br/>
-			<br/>
+		<hr/>
+		<p ng-repeat="signature in data.regions[role].signatures" class="row">
+			<span class="col-md-4" ng-bind-html="signature.text"> </span> <span
+				class="col-md-6">
+				_________________________________________________</span> <span
+				class="col-md-2"> </span>
 		</p>
 	</div>
 </body>
