@@ -22,9 +22,9 @@ public class SahRest {
 	@Autowired private JsonToFileService jsonToFileService;
 	@Autowired private SahExcelService sahExcelService;
 
-	@RequestMapping(value = "/view/read-excel-zait", method = RequestMethod.GET)
+	@RequestMapping(value = "/view/read-excel-zwit", method = RequestMethod.GET)
 	public String createReadExcell(Principal userPrincipal) {
-		logger.debug("/view/read-excel-zait");
+		logger.debug("/view/read-excel-zwit");
 		logger.debug(AppConfig.leonSevoranShortFileName);
 		sahExcelService.copyToWeb(AppConfig.leonSevoranShortFileName);
 		return "redirect:/view/excel/"+AppConfig.leonSevoranShortFileName;

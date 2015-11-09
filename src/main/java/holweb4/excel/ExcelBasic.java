@@ -68,7 +68,8 @@ public class ExcelBasic {
 		return readExcelFullName(AppConfig.applicationDbFolderPfad+fileName);
 	}
 	public void copyToWeb(String shortFuleName) {
-		System.out.println("cp "+AppConfig.applicationDbFolderPfad+shortFuleName+" "+AppConfig.innerExcelFolderPfad+shortFuleName);
+		System.out.println("cp "+AppConfig.applicationDbFolderPfad+shortFuleName
+				+" "+AppConfig.innerExcelFolderPfad+shortFuleName);
 		try {
 			Files.copy(new File(AppConfig.applicationDbFolderPfad+shortFuleName).toPath()
 			, new File(AppConfig.innerExcelFolderPfad+shortFuleName).toPath()

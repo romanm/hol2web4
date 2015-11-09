@@ -28,12 +28,14 @@ public class SahExcelService extends ExcelBasic{
 		Integer rayonColIndex = col1Number - 1 + rayonPosition;
 		
 		Map<String, Object> raionCommonZwit_new = (Map<String, Object>) ((Map<String, Object>) raionCommon_request.get("zwit")).get(rayonKey);
+		logger.debug(""+raionCommonZwit_new);
 
 		Map<String, Object> parameters = (Map<String, Object>) raionCommon_request.get("parameters");
 		Integer row1Number = (Integer) raionCommon_request.get("row1Number");
 		List<String> parameterOrder = (List<String>) parameters.get("order");
 		
-		logger.debug("::"+row1Number+"/"+rayonColIndex);
+		logger.debug(""+parameterOrder);
+		logger.debug("::"+row1Number+"/"+rayonColIndex+"/");
 		for (String paramKey : parameterOrder) {
 			int regionPosition = parameterOrder.indexOf(paramKey);
 			Integer param = (Integer) raionCommonZwit_new.get(paramKey);

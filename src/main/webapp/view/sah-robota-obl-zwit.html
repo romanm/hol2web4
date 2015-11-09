@@ -38,7 +38,7 @@ background-color: yellow;
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid">
 		<h1 ng-bind-html="pageData.title">title</h1>
 		<div class="row navbar2 navbar-default">
 			<div class="col-sm-6" style="font-size: 20px;">
@@ -47,7 +47,7 @@ background-color: yellow;
 				</b>
 			</div>
 			<div class="col-sm-1">
-				<a href="/view/read-excel-zait"> <i
+				<a href="/view/read-excel-zwit"> <i
 					class="fa fa-file-excel-o fa-2x"></i>
 				</a>
 			</div>
@@ -67,21 +67,10 @@ background-color: yellow;
 					району.</small>
 			</div>
 		</div>
-		<!-- 
-		<table style="width: 100%" class="navbar navbar-default">
-			<tr>
-				<td>
-				</td>
-				<td></td>
-				<td class="text-right">
-				</td>
-			</tr>
-		</table>
-		 -->
-		
-				<hr/>
-		<div><b> Міста: </b> <span ng-repeat="regionKey in data.regions.order"
+		<hr/>
+		<div><b> {{data.hospital}}: </b> <span ng-repeat="regionKey in data.regions.order"
 				ng-class="{lightingRegionKey:lightingRegionKey==regionKey}"
+				title="{{data.regions[regionKey].nameLong}}"
 				ng-if="regionKey.substring(2,3) != 'r'"> {{$index + 1}} - <a
 				ng-click="lighting(regionKey)">
 					{{data.regions[regionKey].name}}{{$last ? ".":","}} </a></span>
@@ -97,7 +86,7 @@ background-color: yellow;
 			<thead>
 				<tr>
 					<th></th>
-					<th colspan="{{data.cntCity}}">Міста {{data.cntCity}}</th>
+					<th colspan="{{data.cntCity}}">{{data.hospital}} {{data.cntCity}}</th>
 					<th colspan="{{data.cntRaion}}">Райони {{data.cntRaion}}</th>
 				</tr>
 				<tr>
@@ -164,9 +153,9 @@ background-color: yellow;
 			$scope.sum = function(paramKey){
 				var sum = 0;
 //				if("i04sevoranSubventionPrevious2Year" == paramKey)
-				for(var zwitKey in $scope.data.zwit){
-					if($scope.data.zwit[zwitKey][paramKey])
-					sum += $scope.data.zwit[zwitKey][paramKey];
+				for(var zwitKey in $scope.pageData.zwit){
+					if($scope.pageData.zwit[zwitKey][paramKey])
+					sum += $scope.pageData.zwit[zwitKey][paramKey];
 				}
 				if(sum > 0)
 					return sum;

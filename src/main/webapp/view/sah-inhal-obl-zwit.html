@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="myApp" ng-controller="myCtrl">
 <head>
-<title>BugTinyWiki view</title>
+<title>Зв. Ап-ра і інгал.анестезія</title>
 <script type="text/javascript" src="/js/lib/angular_uk.min.js"></script>
 <script type="text/javascript" src="/js/lib/textAngular-rangy.min.js"></script>
 <script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
@@ -42,7 +42,7 @@ background-color: yellow;
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid">
 		<h1 ng-bind-html="data.title">
 			title
 		</h1>
@@ -73,7 +73,7 @@ background-color: yellow;
 					району.</small>
 			</div>
 		</div>
-		<div><b> Міста: </b> <span ng-repeat="regionKey in data.regions.order"
+		<div><b> {{data.hospital}}: </b> <span ng-repeat="regionKey in data.regions.order"
 				ng-class="{lightingRegionKey:lightingRegionKey==regionKey}"
 				ng-if="regionKey.substring(2,3) != 'r'"> {{$index + 1}} - <a
 				ng-click="lighting(regionKey)">
@@ -94,7 +94,7 @@ background-color: yellow;
 			<thead>
 				<tr>
 					<th></th>
-					<th colspan="{{data.cntCity}}">Міста {{data.cntCity}}</th>
+					<th colspan="{{data.cntCity}}">{{data.hospital}} {{data.cntCity}}</th>
 					<th colspan="{{data.cntRaion}}">Райони {{data.cntRaion}}</th>
 				</tr>
 				<tr>
