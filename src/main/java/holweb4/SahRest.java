@@ -2,6 +2,7 @@ package holweb4;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -34,19 +35,15 @@ public class SahRest {
 		return jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 	}
 
-	private Map<String, Object> getRaionCommonZwit(Map<String, Object> qaJsonJavaObject, String rayonKey) {
-		Map<String, Object> raionCommon_request = (Map<String, Object>) qaJsonJavaObject.get("raionCommon");
-		Map<String, Object> raionCommon_requestZwit = (Map<String, Object>) raionCommon_request.get("zwit");
-		Map<String, Object> raionCommonZwit_new = (Map<String, Object>) raionCommon_requestZwit.get(rayonKey);
-		return raionCommonZwit_new;
-	}
-
 	@RequestMapping(value = "/saveRegionCommon", method = RequestMethod.POST)
 	public  @ResponseBody Map<String, Object> saveSahCommon(@RequestBody Map<String, Object> qaJsonJavaObject, Principal userPrincipal) {
 		String name = userPrincipal.getName();
 		String rayonKey = name;
 		System.out.println(name);
-		Map<String, Object> raionCommonZwit_new = getRaionCommonZwit(qaJsonJavaObject, rayonKey);
+		Map<String, Object> raionCommon_request = (Map<String, Object>) qaJsonJavaObject.get("raionCommon");
+		Map<String, Object> raionCommon_requestZwit = (Map<String, Object>) raionCommon_request.get("zwit");
+		Map<String, Object> raionCommonZwit_new1 = (Map<String, Object>) raionCommon_requestZwit.get(rayonKey);
+		Map<String, Object> raionCommonZwit_new = raionCommonZwit_new1;
 		System.out.println(name);
 		Map<String, Object> sahYearZwitJsonFile = jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 		Map<String, Object> raionCommon_file = (Map<String, Object>) sahYearZwitJsonFile.get("raionCommon");
@@ -57,6 +54,9 @@ public class SahRest {
 			raionCommon_file.put("zwit", raionCommon_fileZwit);
 		}
 		raionCommon_fileZwit.put(rayonKey, raionCommonZwit_new);
+		
+		updateSignatures(qaJsonJavaObject, rayonKey, sahYearZwitJsonFile);
+
 		jsonToFileService.saveJsonToFile(sahYearZwitJsonFile,AppConfig.sahYearZwitJsonFileName);
 		jsonToFileService.backup(AppConfig.sahYearZwitJsonFileName);
 		sahExcelService.saveAthEmployReport(sahYearZwitJsonFile, rayonKey);
@@ -68,17 +68,31 @@ public class SahRest {
 		String name = userPrincipal.getName();
 		String rayonKey = name;
 		System.out.println(name);
+
 		Map<String, Object> rayonZwit_new = (Map<String, Object>) ((Map<String, Object>) qaJsonJavaObject.get("zwit")).get(rayonKey);
 		Map<String, Object> sahYearZwitJsonFile = jsonToFileService.readJsonFromFileName(AppConfig.sahYearZwitJsonFileName);
 		Map<String, Object> zwit = (Map<String, Object>) sahYearZwitJsonFile.get("zwit");
 		zwit.put(rayonKey, rayonZwit_new);
 		
-		Map<String, Object> raionCommonZwit_new = getRaionCommonZwit(qaJsonJavaObject, rayonKey);
+		updateSignatures(qaJsonJavaObject, rayonKey, sahYearZwitJsonFile);
 		
 		jsonToFileService.saveJsonToFile(sahYearZwitJsonFile,AppConfig.sahYearZwitJsonFileName);
 		jsonToFileService.backup(AppConfig.sahYearZwitJsonFileName);
 		sahExcelService.saveLeonSevoran(sahYearZwitJsonFile,rayonKey);
 		return sahYearZwitJsonFile;
+	}
+
+	private void updateSignatures(Map<String, Object> qaJsonJavaObject, String rayonKey,
+			Map<String, Object> sahYearZwitJsonFile) {
+		String regionsKey = "regions";
+		String signaturesKey = "signatures";
+		Map<String, Object> regionRaion_new = (Map<String, Object>) ((Map<String, Object>) qaJsonJavaObject.get(regionsKey)).get(rayonKey);
+		List<Map<String, Object>> signatures = (List<Map<String, Object>>) regionRaion_new.get(signaturesKey);
+		if(signatures != null)
+		{
+			Map<String, Object> regionRaion_file = (Map<String, Object>) ((Map<String, Object>) sahYearZwitJsonFile.get(regionsKey)).get(rayonKey);
+			regionRaion_file.put(signaturesKey, signatures);
+		}
 	}
 
 }

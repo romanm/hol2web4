@@ -32,7 +32,7 @@ input[type="number"] {
 				<a href=".."> </a> 
 				<img width="42"
 					src="http://hol.in.ua/img/hol-kh-3.png"> / <span>{{data.regions[role].name}}</span>
-				/ <span>Заповніть данні звіту</span>
+				/ <span>Звіт про роботу служби</span>
 			</div>
 			<div class="collapse navbar-collapse navbar-right">
 			<button type="button" class="btn btn-info btn-default"
@@ -140,16 +140,18 @@ input[type="number"] {
 					console.log("delSignature - "+index);
 					$scope.pageData.zwit[$scope.role].signatures.splice(index,1);
 				}
+
 				$scope.addSignature = function() {
 					console.log("addSignature");
-					console.log($scope.pageData.zwit[$scope.role]);
+					var regionsRaion = $scope.data.regions[$scope.role];
+					console.log(regionsRaion);
 					
-					if(!$scope.pageData.zwit[$scope.role].signatures){
-						$scope.pageData.zwit[$scope.role].signatures = [{"text":""}];
+					if(!regionsRaion.signatures){
+						regionsRaion.signatures = [{"text":""}];
 					}else{
-						$scope.pageData.zwit[$scope.role].signatures.push({"text":""});
+						regionsRaion.signatures.push({"text":""});
 					}
-					console.log($scope.pageData.zwit[$scope.role].signatures);
+					console.log(regionsRaion);
 				}
 					
 				$scope.saveJsonToFile = function() {
