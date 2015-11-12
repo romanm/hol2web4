@@ -43,20 +43,20 @@ input[type="number"] {
 	</nav>
 
 	<div class="container">
-		<h1 ng-bind-html="data.title"></h1>
-		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
+		<h2 ng-bind-html="data.title"></h2>
+		<h3>Заповніть данні свого району -- {{data.regions[role].name}}</h3>
 		
 		<div class="navbar2 navbar-default">
-			<div class="col-sm-6">
+			<div class="col-sm-3">
 				<button type="button" class="btn btn-info btn-default"
 					ng-if="data.regions[role]" ng-click="saveJsonToFile()"
 					data-dismiss="modal">Запис</button>
 			</div>
-			<div class="col-sm-6 text-right">
+			<div class="col-sm-9 text-right">
 				<form action="/logout" method="post">
 					<a href="/view/sah-raion-zwit.html"> <span
 						class="glyphicon glyphicon-home" aria-hidden="true"></span>
-						Сторінка <span>{{data.regions[role].name}}</span>
+						<span>{{data.regions[role].name}}</span>
 					</a>| <a href="sah-inhal-raion-zwit-druk.html"> <span
 						class="glyphicon glyphicon-print" aria-hidden="true"></span> Друк
 					</a> <input class="btn btn-info btn-default" type="submit"

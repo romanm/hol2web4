@@ -42,21 +42,22 @@ input[type="number"] {
 		</div>
 	</nav>
 
-	<div class="container">
-		<h1 ng-bind-html="pageData.title"></h1>
-		<h2>Заповніть данні свого району -- {{data.regions[role].name}}</h2>
+	
+	<div class="container" ng-if="data.regions[role]">
+		<h2 ng-bind-html="pageData.title"></h2>
+		<h3>Заповніть данні свого району, лікарні -- {{data.regions[role].name}}</h3>
 
 		<div class="navbar2 navbar-default">
-			<div class="col-sm-6">
+			<div class="col-sm-3">
 			<button type="button" class="btn btn-info btn-default"
 						ng-if="data.regions[role]" ng-click="saveJsonToFile()"
 						data-dismiss="modal">Запис</button>
 			</div>
-			<div class="col-sm-6 text-right">
+			<div class="col-sm-9 text-right">
 				<form action="/logout" method="post">
 					<a href="/view/sah-raion-zwit.html"> <span
 						class="glyphicon glyphicon-home" aria-hidden="true"></span>
-						Сторінка <span>{{data.regions[role].name}}</span>
+						<span>{{data.regions[role].name}}</span>
 					</a>| <a href="sah-robota-raion-zwit-druk.html"> <span
 						class="glyphicon glyphicon-print" aria-hidden="true"></span> Друк
 					</a> <input class="btn btn-info btn-default" type="submit"
@@ -72,10 +73,8 @@ input[type="number"] {
 					району.</small>
 			</div>
 		</div>
-		<div ng-if="!data.regions[role]">
-		Ваш логін не надає права доступу до внесення показників районів
-		</div>
-		<table ng-if="data.regions[role]"
+		
+		<table
 			class="table table-bordered table-hover">
 			<tbody ng-repeat="paramKey in pageData.parameters.order">
 				<tr ng-if="pageData.parameters[paramKey].head == '1'">
@@ -116,6 +115,31 @@ input[type="number"] {
 
 	</div>
 	
+	<div class="container" ng-if="!data.regions[role]">
+		<div class="alert alert-danger">Ваш логін не надає права доступу
+			до внесення показників районів</div>
+		<div>
+			<hr />
+			<div class="row navbar2 navbar-default">
+				<div class="col-sm-2">
+					<a href="/"> <span class="glyphicon glyphicon-home"
+						aria-hidden="true"></span>
+					</a>
+				</div>
+				<div class="col-sm-8 text-center">
+					<a href="/view/sah-raion-zwit.html">Сторінка звітів району, лікарні</a>
+				</div>
+				<div class="col-sm-2 text-right">
+					<form method="post" action="/logout" ng-if="user.name!=null">
+						<input type="submit" value="Вийти з аккаунта"
+							class="btn btn-info btn-default" />
+					</form>
+					<a ng-if="user.name==null" class="btn btn-info btn-default"
+						href="/edit/e.html?{{pageKey}}"> Увійти в систему </a>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 <script type="text/javascript">
 	angular.module("myApp", [ 'textAngular' ]).controller(

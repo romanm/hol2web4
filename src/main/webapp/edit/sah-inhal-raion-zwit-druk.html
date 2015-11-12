@@ -36,13 +36,16 @@ body {
 						для друку</span></span>
 			</div>
 			<div class="collapse navbar-collapse navbar-right">
-				<a href="sah-inhal-raion-zwit.html"> Редагувати </a>
+				<a href="sah-inhal-raion-zwit.html"> <span
+					class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					Редагувати
+				</a>
 			</div>
 		</div>
 	</nav>
 	<div class="container">
-		<h1 ng-bind-html="data.title"></h1>
-		<h2>{{data.regions[role].name}}</h2>
+		<h2 ng-bind-html="data.title"></h2>
+		<h3>{{data.regions[role].name}}</h3>
 		<table ng-if="data.regions[role]"
 			class="table table-bordered table-hover">
 			<tbody ng-repeat="paramKey in data.parameters.order">

@@ -11,21 +11,28 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Редагування сторінки: 
-		{{pageObject.title}}
-		</h1>
-		<div>
-			<button ng-click="saveJsonToFile()">запис</button>
-			| <a href="/view/v.html?{{pageKey}}">Перегляд</a>
-			| <a href="/edit/siteMap.html">SiteMap</a>
-			| <a href="/edit/head.html">Шапка сторінки</a>
+		<h1>Редагування сторінки: {{pageObject.title}}</h1>
+		<div ng-if="user.name!='user'">
+			Ваш логін не надае прав для внесення змін до цієй сторінки
+			<p>
+				<a href="/view/v.html?{{pageKey}}">Поверніться</a> до попередньої
+				сторінки
+			</p>
 		</div>
-		<div>
-			Заголовок: <input ng-model="pageObject.title">
+		<div ng-if="user.name=='user'">
+			<div>
+				<button ng-click="saveJsonToFile()">запис</button>
+				| <a href="/view/v.html?{{pageKey}}">Перегляд</a> | <a
+					href="/edit/siteMap.html">SiteMap</a> | <a href="/edit/head.html">Шапка
+					сторінки</a>
+			</div>
+			<div>
+				Заголовок: <input ng-model="pageObject.title">
+			</div>
+			<div text-angular ng-model="pageObject.html" name="demo-editor"
+				ta-text-editor-class="border-around container"
+				ta-html-editor-class="border-around"></div>
 		</div>
-		<div text-angular ng-model="pageObject.html" name="demo-editor"
-			ta-text-editor-class="border-around container"
-			ta-html-editor-class="border-around"></div>
 	</div>
 	<script type="text/javascript">
 		angular.module("myApp", ['textAngular']).controller("myCtrl",
@@ -49,6 +56,12 @@
 			console.log($scope.jsonFromRam);
 			$scope.pageObject = response[$scope.pageKey];
 			console.log($scope.pageObject);
+		});
+
+		$http.get("/read_user").success(
+		function(data) {
+			$scope.user = data;
+			$scope.role = $scope.user.authorities[0].authority.split("_")[1];
 		});
 
 		});

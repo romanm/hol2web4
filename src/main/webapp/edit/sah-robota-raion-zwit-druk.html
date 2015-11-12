@@ -31,15 +31,16 @@ body {
 						для друку</span></span>
 			</div>
 			<div class="collapse navbar-collapse navbar-right">
-				<a href="sah-robota-raion-zwit.html">
-				Редагувати
+				<a href="sah-robota-raion-zwit.html"> <span
+					class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+					Редагувати
 				</a>
 			</div>
 		</div>
 	</nav>
 	<div class="container">
-		<h1>{{pageData.title}}</h1>
-		<h2>{{data.regions[role].name}}</h2>
+		<h2>{{pageData.title}}</h2>
+		<h3>{{data.regions[role].name}}</h3>
 		<table ng-if="data.regions[role]" class="table table-bordered table-hover">
 			<tbody ng-repeat="paramKey in pageData.parameters.order">
 				<tr ng-if="pageData.parameters[paramKey].head == '1'">

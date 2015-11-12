@@ -13,6 +13,11 @@ body {
 	padding-top: 50px;
 	padding-bottom: 60px;
 }
+.navbar2 {
+	border-radius: 4px;
+	min-height: 35px;
+	border: 1px solid #E7E7E7;
+}
 .uppercase {
 	text-transform: uppercase;
 }
@@ -53,13 +58,6 @@ body {
 					<li><a href="/edit/sah-inhal-raion-zwit.html">Апаратура та
 							інгаляційні анестетіки</a></li>
 				</ol>
-				<h3>Архів копії звіту з підписами і печатками</h3>
-				<ol>
-					<li><a href="/edit/sah-archive.html?zwit=robota"> ЗВІТ ПРО
-							РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ</a></li>
-					<li><a href="/edit/sah-archive.html?zwit=inhal">Апаратура
-							та інгаляційні анестетіки</a></li>
-				</ol>
 
 			</div>
 			<div class="col-md-6">
@@ -74,8 +72,27 @@ body {
 				</ol>
 			</div>
 		</div>
-		<hr />
-		<div class="row">
+			<div class="row">
+			<div class="col-md-6">
+							<h3>Архів копії звіту з підписами і печатками</h3>
+				<ol>
+					<li><a href="/edit/sah-archive.html?zwit=robota"> ЗВІТ ПРО
+							РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ</a></li>
+					<li><a href="/edit/sah-archive.html?zwit=inhal">Апаратура
+							та інгаляційні анестетіки</a></li>
+				</ol>
+			
+			</div>
+			<div class="col-md-6">
+				<h3>Підказка</h3>
+				Інструкція по заповненю звіту -<a href="/view/sah-report-in-web.pdf"
+					target=""><i class="fa fa-file-pdf-o"></i></a>,<a
+					href="/view/sah-report-in-web.pps" target=""><i
+					class="fa fa-file-powerpoint-o"></i></a>.
+			</div>
+		</div>
+		<hr/>
+		<div class="row navbar2 navbar-default">
 			<div class="col-sm-5">
 				<a href="/"> <span class="glyphicon glyphicon-home"
 					aria-hidden="true"></span>
@@ -88,7 +105,7 @@ body {
 						class="btn btn-info btn-default" />
 				</form>
 				<a ng-if="user.name==null" class="btn btn-info btn-default"
-					href="/edit/e.html?{{pageKey}}"> Увійти в систему </a>
+					href="/edit/sah-robota-raion-zwit.html"> Увійти в систему </a>
 			</div>
 		</div>
 	</div>

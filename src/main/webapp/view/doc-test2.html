@@ -7,45 +7,64 @@
 <script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
 <script type="text/javascript" src="/js/lib/textAngular.min.js"></script>
 <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
-<link rel="stylesheet" href="/css/lib/font-awesome.min.css">
 <style type="text/css">
 .navbar2 {
 	border-radius: 4px;
 	min-height: 35px;
 	border: 1px solid #E7E7E7;
 }
+.jumbotron h2{
+	margin-top: 8px;
+}
+.jumbotron{
+	padding: 2px;
+	margin-bottom: 4px;
+}
 </style>
 </head>
 <body>
 	<div class="container">
 		<div ng-bind-html="jsonFromRam.head"></div>
-		<h1 ng-bind-html="pageObject.title">BugTinyWiki view</h1>
-		<div ng-bind-html="pageObject.html"></div>
-		<hr/>
-		<div class="row navbar2 navbar-default">
-			<div class="col-sm-5">
-				<a href="/"> <span class="glyphicon glyphicon-home"
-					aria-hidden="true"></span>
-				</a>
+		<div class="jumbotron">
+			<h2>Тренування, підготовка до здачі тесту лікарів ХОЛ</h2>
+		</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<h3 ng-click="toLogin()">Крок 1</h3>
+				<p>Залогінитись на сайті </p>
 			</div>
-			<div class="col-sm-2">
-				<a href="/edit/e.html?{{pageKey}}">Редагувати</a>
+			<div class="col-sm-4">
+				<h3>Крок 2</h3>
+				<p>
+					<a href="http://dn.khnu.km.ua/dn/k_default.aspx?M=k2002&T=r1">
+						Прочитати підготовчу літературу </a>
+				</p>
 			</div>
-			<div class="col-sm-5 text-right">
-				<form method="post" action="/logout" ng-if="user.name!=null">
-					<input type="submit" value="Вийти з аккаунта"
-						class="btn btn-info btn-default" />
-				</form>
-				<a ng-if="user.name==null" class="btn btn-info btn-default"
-					href="/edit/e.html?{{pageKey}}"> Увійти в систему </a>
+			<div class="col-sm-4">
+				<h3>Крок 3</h3>
+				<p>
+					<a href="http://dn.khnu.km.ua/dn/test.aspx?M=2002&Z=%D0%A2%D0%9A1">
+						Пройти пробне тестування. Перевірити свою ступінь готовності до
+						тесту </a>
+				</p>
 			</div>
 		</div>
+		<!-- 
+		<iframe src="{{frameSrc}}" width="100%"
+		 -->
+		<iframe src="http://dn.khnu.km.ua" width="100%"
+			height="400px">
+			<p>Your browser does not support iframes.</p>
+		</iframe>
 	</div>
 
-	<script type="text/javascript">
+</body>
+<script type="text/javascript">
 		angular.module("myApp", ['textAngular']).controller("myCtrl",
 		function demoController($scope, $http) {
 			$scope.pageKey = window.location.search.substring(1);
+			
+			$scope.frameSrc="http://dn.khnu.km.ua/dn/user.aspx";
 			
 			$http.get("/view/readContent").success(
 			function(response) {
@@ -64,5 +83,4 @@
 
 		});
 	</script>
-</body>
 </html>
