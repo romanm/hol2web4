@@ -10,15 +10,15 @@ public class AppConfig {
 	final static String qaJsonFileName = "qa.json";
 	final static String jsonDbFiles	= "src/main/webapp/db/";
 	//product
-//	final static String applicationFolderPfad		= "/home/holweb/server4/hol2web4/";
-//	public static String applicationDbFolderPfad	= "/home/holweb/server4/db/h2hol2web4/";
-//	static String applicationDbBackupFolderPfad		= "/home/holweb/server4/db/h2hol2web4-backup/";
-//	final static String urlDb = "jdbc:h2:"+ applicationDbFolderPfad + "holweb4";
+	final static String applicationFolderPfad		= "/home/holweb/server4/hol2web4/";
+	public static String applicationDbFolderPfad	= "/home/holweb/server4/db/h2hol2web4/";
+	static String applicationDbBackupFolderPfad		= "/home/holweb/server4/db/h2hol2web4-backup/";
+	final static String urlDb = "jdbc:h2:"+ applicationDbFolderPfad + "holweb4";
 	//development
-	final static String applicationFolderPfad = "/home/roman/algoritmed.com/development/hol2web4/";
-	public final static String applicationDbFolderPfad	= "/home/roman/algoritmed.com/development/db-hol2web4/";
-	static String applicationDbBackupFolderPfad = "/home/roman/algoritmed.com/development/db-hol2web4-backup/";
-	final static String urlDb = "jdbc:h2:tcp://localhost/holweb4/holweb4";
+//	final static String applicationFolderPfad = "/home/roman/algoritmed.com/development/hol2web4/";
+//	public final static String applicationDbFolderPfad	= "/home/roman/algoritmed.com/development/db-hol2web4/";
+//	static String applicationDbBackupFolderPfad = "/home/roman/algoritmed.com/development/db-hol2web4-backup/";
+//	final static String urlDb = "jdbc:h2:tcp://localhost/holweb4/holweb4";
 
 //	final static String urlDb = "jdbc:h2:/home/roman/algoritmed.com/h2-files/holweb4/holweb4";
 
