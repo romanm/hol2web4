@@ -58,6 +58,7 @@
 			$http.get("/read_user").success(
 			function(data) {
 				$scope.user = data;
+				if($scope.user.authorities)
 				$scope.role = $scope.user.authorities[0].authority
 						.split("_")[1];
 			});

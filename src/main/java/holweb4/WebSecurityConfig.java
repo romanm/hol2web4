@@ -19,6 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		,"/testGet"
                 		,"/css/**"
                 		,"/js/**"
+                		,"/img/**"
                 		,"/view/**"
                 		,"/movePatients.html"
                 		,"/moveTodayPatients.html"

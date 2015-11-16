@@ -49,16 +49,16 @@ body {
 				<a href="/view/v.html?page12"
 					title="Сторінка освіти і навчання всіх працівників"> <span
 					class="glyphicon glyphicon-home" aria-hidden="true"></span>
-				</a> > Тренування, підготовка до здачі тесту лікарів ХОЛ
+				</a> > Тренування, підготовка до здачі тесту медичних сестер ХОЛ
 			</h2>
 		</div>
 		<p>
-			З метою наданя можливості постійного підвищення кваліфікації <b>лікарів</b>
-			і <a href="/view/ms-test.html"> медичних сестер</a>, силами лікарів
-			ХОЛ і факультету заочно-дистанційного навчання Хмельницького
-			нацiонального унiверситету створена система підготовки і перевірки
-			професійних знань. Детальніше на сторінці <a
-			href="/view/v.html?page12">освіти</a>.
+			З метою наданя можливості постійного підвищення кваліфікації <a
+				href="/view/doc-test.html">лікарів</a> і <b> медичних сестер</b>,
+			силами лікарів ХОЛ і факультету заочно-дистанційного навчання
+			Хмельницького нацiонального унiверситету створена система підготовки
+			і перевірки професійних знань. Детальніше на сторінці <a
+				href="/view/v.html?page12">освіти</a>.
 		</p>
 		<div class="row">
 			<div class="col-sm-4">
@@ -86,10 +86,7 @@ body {
 				<div class="alert alert-success">Перейти до наступної теми</div>
 			</div>
 		</div>
-		<!-- 
-		<iframe src="{{frameSrc}}" width="100%"
-		 -->
-		<iframe ng-src="http://dn.khnu.km.ua/dn/k_default.aspx?T=r1&M=k2002"
+		<iframe ng-src="http://dn.khnu.km.ua/dn/k_default.aspx?T=r1&M=k2003"
 			width="100%" height="500px">
 			<p>Your browser does not support iframes.</p>
 		</iframe>
@@ -117,8 +114,6 @@ body {
 		}
 	console.log($scope.M);
 	console.log(parameters);
-		
-		$scope.frameSrc="http://dn.khnu.km.ua/dn/user.aspx";
 		
 		$http.get("/view/readContent").success(
 		function(response) {

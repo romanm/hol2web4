@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>- jsFiddle demo by danialfarid</title>
+<title>Звіт в архів</title>
 
 <!-- 
 <script type='text/javascript' src='/js/lib/dummy.js'></script>
@@ -10,11 +10,21 @@
  -->
 
 <script type="text/javascript" src="/js/lib/angular_uk.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-rangy.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular-sanitize.min.js"></script>
+<script type="text/javascript" src="/js/lib/textAngular.min.js"></script>
+<link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+<link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+
+
 <script type="text/javascript" src="/js/lib/ng-file-upload-shim.min.js"></script>
 <script type="text/javascript" src="/js/lib/ng-file-upload.min.js"></script>
 
-
 <style type='text/css'>
+body {
+	padding-top: 50px;
+	padding-bottom: 60px;
+}
 .thumb {
 	width: 24px;
 	height: 24px;
@@ -41,20 +51,42 @@ form .progress {
 }
 </style>
 
-
-
-
 <script type='text/javascript'>//<![CDATA[
 
 //inject angular file upload directives and services.
 var app = angular.module('fileUpload', ['ngFileUpload']);
 
-app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
-    $scope.uploadPic = function(file) {
+app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', function ($scope, Upload, $timeout, $http) {
+	
+	$http.get("/view/readSahYearZwit").success(function(data) {
+		$scope.data = data;
+		console.log($scope.data);
+		$scope.pageData = data.raionCommon;
+		console.log($scope.pageData);
+	});
+
+	$http.get("/read_user").success(
+	function(data) {
+		$scope.user = data;
+		$scope.role = $scope.user.authorities[0].authority
+				.split("_")[1];
+	});
+
+	$scope.setFile = function(e){
+		if(e.picFile){
+			console.log("---------------");
+			console.log(e.picFile.name);
+			console.log("---------------");
+		}
+	}
+	$scope.uploadPic = function(file) {
+			console.log("---------------");
+			console.log(file.name);
+			console.log("---------------");
     file.upload = Upload.upload({
       //url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
       url: '/upload',
-      data: {file: file},
+      data: {file: file, fileName: file.name},
     });
 
     file.upload.then(function (response) {
@@ -83,11 +115,25 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Uplo
 </head>
 <body>
 <body ng-app="fileUpload" ng-controller="MyCtrl">
-<h1>Архів</h1>
-	<form name="myForm">
-		<fieldset>
-			<legend>Загрузка файлів анестезіологічного звіту в архів: </legend>
-			<!-- 
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<a href=".."> <img width="42"
+					src="http://hol.in.ua/img/hol-kh-3.png">
+				</a> / Анестезіологічні звіти / <a href="/view/sah-raion-zwit.html">
+					{{data.regions[role].name}}</a>
+			</div>
+			<div class="collapse navbar-collapse navbar-right">
+				
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<h1>Архів</h1>
+		<form name="myForm">
+			<fieldset>
+				<legend>Загрузка файлів анестезіологічного звіту в архів: </legend>
+				<!-- 
 			Username: <input type="text" name="userName" ng-model="username"
 				size="31" required> <i
 				ng-show="myForm.userName.$error.required">*required</i> <br>
@@ -95,24 +141,43 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Uplo
 			placeholder="Оберіть файл"
 			value="Оберіть файл"
 			 -->
-				Файл:
-			<input type="file" ngf-select ng-model="picFile" name="file"
-				accept=".pdf,image/*" ngf-max-size="2MB" required> <i
-				ng-show="myForm.file.$error.required">*обов’язковий</i><br> <i
-				ng-show="myForm.file.$error.maxSize">Файл занадто великий
-				{{picFile.size / 1000000|number:1}}MB: максимум 2Mb</i> <img
-				ng-show="myForm.file.$valid" ngf-thumbnail="picFile" class="thumb">
-			<button ng-click="picFile = null" ng-show="picFile">Видалити</button>
+				<div class="row">
+					<div class="col-md-5">
+						<div class="form-group">
+							<label for="inputFile">Файл:</label> <input type="file"
+								class="btn btn-info btn-default" id="inputFile" ngf-select
+								ng-model="picFile" name="file" ng-change="setFile(this)"
+								accept=".pdf,image/*" ngf-max-size="2MB" required>
+							<!-- 
+					<p class="help-block">Example block-level help text here.</p>
+						 -->
+							<i ng-show="myForm.file.$error.required">*обов’язковий</i><br>
+							<i ng-show="myForm.file.$error.maxSize">Файл занадто великий
+								{{picFile.size / 1000000|number:1}}MB: максимум 2Mb</i> <img
+								ng-show="myForm.file.$valid" ngf-thumbnail="picFile"
+								class="thumb">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<button class="btn btn-info btn-default" ng-disabled="!myForm.$valid"
+							ng-click="uploadPic(picFile)">Відправити</button>
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-default" ng-click="picFile = null"
+							ng-show="picFile">Видалити</button>
+					</div>
+				</div>
+				<span class="progress" ng-show="picFile.progress >= 0">
+					<div style="width: {{picFile.progress"
+						ng-bind="picFile.progress + '%'"></div>
+				</span> <span ng-show="picFile.result">Upload Successful</span> <span
+					class="err" ng-show="errorMsg">{{errorMsg}}</span>
+			</fieldset>
 			<br>
-			<button ng-disabled="!myForm.$valid" ng-click="uploadPic(picFile)">Відправити</button>
-			<span class="progress" ng-show="picFile.progress >= 0">
-				<div style="width: {{picFile.progress"
-					ng-bind="picFile.progress + '%'"></div>
-			</span> <span ng-show="picFile.result">Upload Successful</span> <span
-				class="err" ng-show="errorMsg">{{errorMsg}}</span>
-		</fieldset>
-		<br>
-	</form>
+		</form>
+	</div>
 </body>
 
 </body>

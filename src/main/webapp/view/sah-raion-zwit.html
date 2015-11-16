@@ -47,6 +47,7 @@ body {
 		<h2>{{data.regions[role].name}}</h2>
 		<div class="row">
 			<div class="col-md-6">
+
 				<h3>Заповніть данні свого району, лікарні</h3>
 				<!-- 
 				<h3 class="uppercase">район</h3>
@@ -74,14 +75,18 @@ body {
 		</div>
 			<div class="row">
 			<div class="col-md-6">
-							<h3>Архів копії звіту з підписами і печатками</h3>
+				<h3>Архів копії звіту з підписами і печатками</h3>
 				<ol>
 					<li><a href="/edit/sah-archive.html?zwit=robota"> ЗВІТ ПРО
 							РОБОТУ СЛУЖБИ АНЕСТЕЗІОЛОГІЇ ТА ІНТЕНСИВНОЇ ТЕРАПІЇ</a></li>
 					<li><a href="/edit/sah-archive.html?zwit=inhal">Апаратура
 							та інгаляційні анестетіки</a></li>
 				</ol>
-			
+				<h4>Архів файли</h4>
+				<div ng-repeat="aFile in sahYearZwitArchive.files">
+				<a href="/view/af/{{aFile}}">
+				{{aFile}}
+				</a></div>
 			</div>
 			<div class="col-md-6">
 				<h3>Підказка</h3>
@@ -123,11 +128,19 @@ body {
 				});
 
 				$http.get("/read_user").success(
-						function(data) {
-							$scope.user = data;
-							$scope.role = $scope.user.authorities[0].authority
-									.split("_")[1];
-						});
+				function(data) {
+					$scope.user = data;
+					if($scope.user.authorities){
+					$scope.role = $scope.user.authorities[0].authority
+							.split("_")[1];
+
+					$http.get("/view/readSahYearZwitArchive").success(function(data) {
+						$scope.sahYearZwitArchive = data;
+						console.log($scope.sahYearZwitArchive);
+					});
+
+					}
+				});
 
 				$scope.saveJsonToFile = function() {
 					$http.post("/saveRegionCommon", $scope.data).then(
